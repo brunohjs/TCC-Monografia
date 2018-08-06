@@ -1,0 +1,60 @@
+% INTRODUÇÃO-------------------------------------------------------------------
+
+\chapter{INTRODUÇÃO}
+\label{chap:introducao}
+
+\section{Motivação}
+\label{sec:motivacao}
+
+O aquecimento global é o processo de aumento da temperatura média da superfície terrestre e dos oceanos, causado por uma grande quantidade de gases, como o dióxido de carbono ($CO_2$) e o metano ($CH_4$), originados de atividades humanas e emitidos na atmosfera terrestre provocando grandes impactos ambientais negativos. Os principais impactos causados pelo aquecimento global são: aumento de eventos de extremo climático (ciclones, ondas de calor, chuvas torrenciais, etc), redução de biodiversidade, elevação do nível do mar e da temperatura na superfície terrestre, etc. 
+
+A temperatura da superfície global aumentou cerca de 0.2 \textordmasculine C em três décadas e 0.8 \textordmasculine C no último século \cite{hansen2006global}. Para ilustrar esse retrato, a Figura \ref{fig:ast-and-sl}-A mostra as mudanças na temperatura média da superfície terrestre enquanto a Figura \ref{fig:ast-and-sl}-B exibe as mudanças no nível médio do mar. Essas mudanças ocorreram no intervalo de 1986 a 2005.
+
+\begin{figure}[H]
+    \centering
+    \caption{(A) Mudança na temperatura média da superfície terrestre (1986 -- 2005). (B) Mudança do nível médio do mar (1986 -- 2005).}
+    \includegraphics[scale=0.27]{dados/figuras/ast-and-sl.png}
+    \fonte{Adaptado de \cite{pachauri2014climate}.}
+    \label{fig:ast-and-sl}
+\end{figure}
+
+A redução da criosfera é um dos problemas ocasionado pelo aumento da temperatura e do nível do mar. A criosfera é constituída por regiões da superfície terrestre cobertas permanentemente por gelo e neve ou o solo é constituído por gelo, como por exemplo: lagos e rios congelados, mantos e calotas de gelo, neve sazonal e geleiras.
+
+Em destaque, as geleiras do planeta estão perdendo massa, tornando uma das principais causas para o aumento no nível dos oceanos \cite{rietbroek2016revisiting}. Devido a importância econômica, ao seu papel como indicador de mudança no clima, além de ser o maior reservatório de água doce sobre a Terra, perdendo em volume total de água apenas para os oceanos \cite{pinto2015crise}, o monitoramento das geleiras se torna necessário e indispensável para o planeta.
+
+Entretanto, a maior parte das geleiras estão em locais remotos, dificultando o acesso e a logística à essas áreas. Por consequência, os estudos com o sensoriamento remoto se tornou uma alternativa comumente utilizada para a estimação de balanço de massa. Porém, os satélites não são eficazes para coletar informações de geleiras que possuem uma parcela submersa, visto que a tecnologia do sensoriamento remoto só captura informações da superfície terrestre, impedindo coletar informações a respeito do que está entre a superfície e o fundo de corpos d'água. 
+A Figura \ref{fig:remote_sensor} mostra o mecanismo de aquisição de dados do sensoriamento remoto. A obtenção de informações é realizada por meio do registro do retorno da interação da radiação eletromagnética provida do Sol com a superfície terrestre. 
+
+\begin{figure}[H]
+    \centering
+    \caption{Aquisição de dados do sensoriamento remoto.}
+    \includegraphics[scale=0.5]{dados/figuras/remote_sensor.png}
+    \label{fig:remote_sensor}
+    \fonte{Adaptado de \cite{kerle2004principles}.}
+\end{figure}
+
+Para coletar informações em ambientes submersos torna-se mais adequado utilizar sensores que operam com ondas sonoras, pois essas se propagam melhor em ambientes com maior densidade, como o fundo de oceanos e lagos.
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+O objetivo principal do trabalho é utilizar uma plataforma robótica do tipo ROV (Robô Operado Remotamente, do inglês \textit{Remotely Operated Vehicle}) equipada com um sensor sonar MSIS (do inglês \textit{Mechanical Scanning Image Sonar}) para estimar variações espaciais (balanço de massa) de superfícies submersas por meio da reconstrução em 3D de capturas temporalmente espaçadas de imagens acústicas. 
+Para atingir o objetivo principal, será necessário alcançar tais objetivos:
+
+\begin{itemize}
+    \item Estudar o mecanismo e eficiência da aquisição de imagens do sonar MSIS e os principais métodos para manipular imagens acústicas;
+    \item Coletar dados em simulação e \textit{in loco} utilizando robô subaquático acoplado com sonar e sensores auxiliares;
+    \item Reconstruir as superfícies submersas utilizando algoritmos de reconstrução com o auxílio de bibliotecas de nuvem de pontos;
+    \item Comparar modelos reconstruídos com o intuito de analisar a perda/ganho de volume entre eles. 
+\end{itemize}
+\hspace{1em}
+
+Para a efetivação dos objetivos, o NAUTEC (Grupo de Pesquisa em Automação e Robótica Inteligente) junto ao C3 (Centro de Ciências Computacionais), disponibilizará a plataforma robótica, o sensor sonar e sensores auxiliares. Este trabalho é o inicio dos estudos para uma melhor precisão na estimação da ablação\footnote{Ablação é a perda de massa/energia de um sistema, nessa circunstância, a fusão e sublimação do gelo.} e o conhecimento de características da parte frontal submersa de geleiras, tais como configuração física e comportamento de degelo, que será uma contribuição para o LACRIO (Laboratório de Monitoramento da Criosfera). Além disso, o trabalho contribuirá para a consolidação da área da robótica subaquática na FURG (Universiade Federal do Rio Grande).
+
+Embora o trabalho prático seja realizada em ambiente não glacial, a intenção do projeto é, posteriormente, ser executado em geleiras.
+
+\section{Organização do Trabalho}
+\label{sec:organizacaoTrabalho}
+
+Primeiramente, após o capítulo de introdução, o Capítulo \ref{chap:fundamentacaoTeorica} apresenta assuntos fundamentais para a compreensão do mesmo, como a descrição do sensor e dos \textit{softwares} utilizados. No terceiro capítulo, é abordado detalhadamente a metodologia utilizada e seus motivos. O Capítulo \ref{chap:resultados} apresenta os resultados que foram obtidos no experimento. 
+%Por último, o capítulo \ref{chap:conclusao} encerra o trabalho com a opinião do autor sobre o desenvolvimento e resultados obtidos.
