@@ -5,7 +5,7 @@
 
 Para uma melhor organização, a efetivação do trabalho é composta por duas partes, onde a primeira é a coleta de dados e, a segunda, o desenvolvimento da aplicação. 
 Na segunda parte da execução do trabalho, será o desenvolvimento do algoritmo de reconstrução, que consistirá em quatro etapas, no qual, para cada etapa é desenvolvido uma rotina. 
-Primeiro os dados serão preparados, em seguida serão refinados e filtrados, por fim, renderizados. 
+Primeiro os dados serão preparados, em seguida serão refinados e filtrados, por fim, renderizados.
 O produto final do processamento, será uma superfície tridimensional.
 Cada parte está segmentada em etapas, no qual cada etapa é um processo a ser executado. Por conseguinte, a organização da metodologia apresenta os itens:
 
@@ -32,7 +32,16 @@ Cada parte está segmentada em etapas, no qual cada etapa é um processo a ser e
 \end{itemize}
 \hspace{1em}
 
-A seguir, cada etapa será descrita de forma detalhada como foi realizada, quais ferramentas foram utilizadas e os problemas encontrados durante o processo.  
+A Figura \ref{fig:etapas} mostra as etapas do desenvolvimento da aplicação. Primeiramente, os dados são inseridos através de um \textit{dataset}, em verde são representados as etapas do pré-processamento, em amarelo são representados os processos de filtragem, o processo de reconstrução é representado em marrom, e por fim, a superfície é gerada.
+A etapa de comparação requer duas superfícies na entrada do processo, para gerar a superfície resultante.
+
+
+\begin{figure}[H]
+    \centering
+    \caption{Etapas do processo de desenvolvimento da aplicação.}
+    \includegraphics[scale=0.4]{dados/figuras/etapas.png}
+    \label{fig:etapas}
+\end{figure}
 
 \section{Coleta de Dados}
 \label{sec:coleta_dados}
@@ -100,7 +109,7 @@ Desse modo, com um conjunto de pontos sem ruídos, torna mais simples o processo
 Para realizar essa etapa, os filtros foram separados em dois grupos.
 O primeiro grupo é composto por filtros simples, porém removem maior parte dos pontos desnecessários. 
 O segundo conjunto é formado por filtros mais complexos onde muitos já estão implementados na PCL (Seção \ref{sec:pcl}).
-Os filtros simples são representados pelo filtro por ângulo, filtro por intensidade e filtro por distância mínima, enquanto que os filtros complexos, são retratados pelo filtro de grade de \textit{voxel}\footnote{Um \textit{voxel} é um \textit{pixel} que contém volume em um espaço tridimensional. Fazendo uma analogia, o \textit{voxel} seria um \textit{pixel} em 3D.}, filtro de suavização, filtro radial, e o filtro estatístico de remoção de \textit{outliers}.
+Os filtros simples são representados pelo filtro por ângulo, filtro por intensidade e filtro por distância mínima, enquanto que os filtros complexos, são retratados pelo Filtro de Grade de \textit{Voxels}\footnote{Um \textit{voxel} é um \textit{pixel} que contém volume em um espaço tridimensional. Fazendo uma analogia, o \textit{voxel} seria um \textit{pixel} em 3D.}, Filtro de Suavização e o Filtro Estatístico de Remoção de \textit{Outliers}.
 
 \subsection{Filtro por Ângulo}
 \label{sec:angle_filter}
@@ -127,18 +136,18 @@ Este processo remove os pontos que possuem baixo valor de intensidade. Os motivo
 \begin{figure}[H]
     \centering
     \caption{Filtros simples de remoção de \textit{outliers}.}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/angle_filter.png}
         \caption{Filtro por ângulo horizontal.}
         \label{fig:angle_filter}
     \end{subfigure}
     \hspace{3em}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/distance_filter.png}
         \caption{Filtro por distância mínima.}
         \label{fig:distance_filter}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/intensity_filter.png}
         \caption{Filtro por intensidade.}
         \label{fig:intensity_filter}
@@ -186,23 +195,24 @@ O filtro percorre a nuvem calculando, para cada ponto, a distância média entre
 \label{sec:smoothing_filter}
 
 O Filtro de Suavização é um filtro que está presenta na biblioteca PCL e é responsável por suavizar e reconstruir a superfície de pontos na nuvem. 
-Para realizar o procedimento, o filtro utiliza o MLS (do inglês \textit{Moving Least Squares}), um método de reamostragem, desenvolvido por \cite{levin1998mls}, capaz de recriar partes ausentes ou suavizar superfícies por meio da interpolação polinomial entre pontos.
+Para realizar o procedimento, o filtro utiliza o MLS (do inglês \textit{Moving Least Squares}), um método de reamostragem, desenvolvido por \cite{levin1998mls}, capaz de recriar partes ausentes ou suavizar superfícies por meio da interpolação polinomial entre pontos. 
+Para exemplificar, a Figura \ref{fig:smoothing_filter} exibe uma superfície sem tratamento (imagem à esquerda) e a mesma superfície após a aplicação do filtro (imagem à direita).
 
 \begin{figure}[H]
     \centering
     \caption{Exemplo do uso do Filtro de Suavização.}
     \includegraphics[scale=0.3]{dados/figuras/mls_filter.jpg}
     \fonte{Adaptado de \cite{ridel2015mls}.}
-    \label{fig:my_label}
+    \label{fig:smoothing_filter}
 \end{figure}
 
-O filtro é utilizado com a finalidade de corrigir boa parte do ruído e pequenos erros de medição de distância gerado nos dados, provenientes da movimentação do robô enquanto coleta.
-
+No trabalho, o filtro é utilizado com o intuito de suavizar e corrigir boa parte do ruído e pequenos erros de medição de distância gerado nos dados, provenientes da movimentação do robô enquanto realiza a coleta.
 
 \section{Reconstrução}
 \label{sec:reconstrucao}
 
-A reconstrução do modelo tridimensional é gerada a partir da nuvem de pontos. Como exemplo, a Figura \ref{fig:reconstruction} mostra a reconstrução de um objeto passo a passo. Nessa parte do processo, já é obtido a forma final da superfície.
+A reconstrução do modelo tridimensional é gerada a partir da nuvem de pontos, onde é obtido a forma final da superfície. 
+Como exemplo, a Figura \ref{fig:reconstruction} mostra a reconstrução de um objeto passo a passo.
 
 \begin{figure}[H]
     \centering
@@ -211,6 +221,66 @@ A reconstrução do modelo tridimensional é gerada a partir da nuvem de pontos.
     \includegraphics[scale=0.8]{dados/figuras/reconstruction.png}
     \fonte{Adaptado de \cite{jenke2006bayesian}.}
 \end{figure}
+
+Para dar forma à superfície é necessário uma lógica para ligar os pontos, para tal lógica chamamos de triangulação.
+No trabalho, a triangulação é feita através da construção de triângulos sem fazer sobreposições, como ilustrado nos exemplos da Figura \ref{fig:triangulation}. 
+Apesar do nome triangulação remeter à triângulos, ela pode ser constituída por qualquer espaço em simplexos ou polígono. 
+Os simplexos são extensões de triângulos em outras dimensões, tais como segmentos de reta, tetraedros, e etc. 
+Existem diversas formas para fazer a triangulação em um conjunto de pontos, entre elas estão a triangulação incremental e a triangulação do fecho convexo.
+
+\begin{figure}[H]
+    \centering
+    \caption{Exemplos de modelos de triangulação.}
+    \begin{subfigure}[t]{0.6\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/triangulation_incremental.png}
+        \caption{Triangulação Incremental}
+        \label{fig:incremental_triangulation}
+    \end{subfigure}
+    \hspace{5em}
+    \begin{subfigure}[t]{0.6\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/triangulation_convex.png}
+        \caption{Triangulação do Fecho Convexo}
+        \label{fig:convex_triangulation}
+    \end{subfigure}
+    \label{fig:triangulation}
+\end{figure}
+
+Na Figura \ref{fig:incremental_triangulation} mostra a triangulação incremental, onde é realizada a construção de triângulos a partir da seleção aleatória do ponto inicial, seguindo a ligação pelo ponto mais próximo. 
+Na Figura \ref{fig:convex_triangulation} mostra a triangulação do fecho convexo, na qual se realiza o fecho convexo do conjunto de pontos seguindo pela triangulação.
+Após esse primeiro passo, para cada ponto no interior dos triângulos formados, se divide em mais três triângulos.
+
+Fecho convexo (também conhecido como invólucro convexo ou envoltório convexo) são estruturas que englobam o conjunto de pontos, através da intersecção com seus pontos marginais. No plano, o fecho convexo é um polígono, enquanto que no espaço é representado por uma superfície (Figura \ref{fig:convex_hull}).
+
+\begin{figure}[H]
+    \centering
+    \caption{Fecho convexo representado no plano (esquerda) e no espaço (direita).}
+    \includegraphics[scale=0.4]{dados/figuras/convex_hull.png}
+    \label{fig:convex_hull}
+\end{figure}
+
+Uma triangulação nem sempre é adequada para um certo problema, pois os triângulos precisam ser parecidos com o triângulo equilátero (triângulos que não possuem ângulos internos agudos). Essas triangulações especiais usam critérios para definir triângulos, entre os modelos conhecidos existe a Triangulação de Delaunay, proposto por \cite{delaunay1934sphere}.
+A triangulação de Delaunay pode ser formulada e
+estudada no espaço euclidiano de dimensão $n$, mas para fins explicativos será definida e exemplificada apenas no plano.
+
+\begin{figure}[H]
+    \centering
+    \caption{(a) Triangulação que não satisfaz o critério de Delaunay; (b) Triangulação de Delaunay.}
+    \begin{subfigure}[t]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/delaunay1.png}
+        \caption{}
+        \label{fig:delaunay1}
+    \end{subfigure}
+    \hspace{3em}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/delaunay2.png}
+        \caption{}
+        \label{fig:delaunay2}
+    \end{subfigure}
+    \fonte{\cite{piteri2007triangulacao}.}
+    \label{fig:delaunay}
+\end{figure}
+
+
 
 \section{Comparação}
 \label{sec:comparacao}
