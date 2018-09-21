@@ -258,9 +258,12 @@ Fecho convexo (também conhecido como invólucro convexo ou envoltório convexo)
     \label{fig:convex_hull}
 \end{figure}
 
-Uma triangulação nem sempre é adequada para um certo problema, pois os triângulos precisam ser parecidos com o triângulo equilátero (triângulos que não possuem ângulos internos agudos). Essas triangulações especiais usam critérios para definir triângulos, entre os modelos conhecidos existe a Triangulação de Delaunay, proposto por \cite{delaunay1934sphere}.
-A triangulação de Delaunay pode ser formulada e
-estudada no espaço euclidiano de dimensão $n$, mas para fins explicativos será definida e exemplificada apenas no plano.
+Uma triangulação nem sempre é adequada para um certo problema, pois os triângulos precisam ser parecidos com o triângulo equilátero (triângulos que não possuem ângulos internos agudos). Essas triangulações especiais usam critérios para definir triângulos, entre os modelos conhecidos existe a Triangulação de Delaunay.
+
+
+\subsection{Triangulação de Delaunay}
+\label{sec:delaunay}
+A triangulação de Delaunay, proposto por \cite{delaunay1934sphere}, é o método responsável por fornecer uma triangulação com o maior ângulo mínimo, ou seja, os melhores triângulos de forma única, em um determinado conjunto de pontos. O método pode ser formulado e estudado no espaço euclidiano de dimensão $n$, mas para fins explicativos será definida e exemplificada apenas no plano.
 
 \begin{figure}[H]
     \centering
@@ -280,6 +283,38 @@ estudada no espaço euclidiano de dimensão $n$, mas para fins explicativos ser�
     \label{fig:delaunay}
 \end{figure}
 
+Para a criação dos triângulos, se pode utilizar qualquer metodologia de triangulação (inclusive as que foram apresentadas na Figura \ref{fig:triangulation}). Após a criação, há uma verficação, que deve ser realizada em cada triângulo, definida pela regra do circuncírculo, que determina se o triângulo é ou não de Delaunay. 
+A regra descreve que para cada triângulo da malha, é traçado um círculo que passa pelos três vértices do triângulo, se esse círculo conter apenas os 3 pontos do triângulo, então ele satisfaz a regra. 
+Se haver mais de 3 pontos dentro, então é aplicada a troca (\textit{flip}) entre arestas contidas no círculo. 
+Para explicar o termo \textit{flip}, observe a Figura \ref{fig:delaunay1}, onde o triângulo ABC não satisfaz a regra do circuncírculo, pois há outro vértice contído (D). 
+Para resolver esse problema se utiliza o \textit{flip} entre os triângulos ABC e ACD, que faz a troca da aresta AC pela aresta DB. 
+Refazendo a regra do circuncírculo nos triângulos, é possível observar (Figura \ref{fig:delaunay2}) que ambos são triângulos de Delaunay.
+
+\begin{figure}[H]
+    \centering
+    \caption{Regra do circuncírculo que define se um triângulo é ou não de Delaynay.}
+    \begin{subfigure}[t]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/delaunay_theorem1.png}
+        \caption{}
+        \label{fig:delaunay_theorem1}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{0.27\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/delaunay_theorem2.png}
+        \caption{}
+        \label{fig:delaunay_theorem2}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/delaunay_theorem3.png}
+        \caption{}
+        \label{fig:delaunay_theorem3}
+    \end{subfigure}
+    \label{fig:delaunay_theorem}
+\end{figure}
+
+Na Figura \ref{fig:delaunay_theorem} há outro exemplo de \textit{flip}. A Figura \ref{fig:delaunay_theorem2} mostra ambos triângulos que não obedecem a regra do circuncírculo. Realizando o \textit{flip} entre as arestas BD e AC, a regra se torna válida (Figura \ref{fig:delaunay_theorem3}). 
+%Explicar como funciona a triangulação de Delaunay
 
 
 \section{Comparação}
