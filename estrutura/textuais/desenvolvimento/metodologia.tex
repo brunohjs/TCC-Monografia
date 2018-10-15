@@ -63,7 +63,8 @@ Para analisar a diferença entre os dados de ambas coletas, será realizada comp
 
 \section{Pré-processamento}
 
-A etapa de pré-processamento serve para manipular os dados do \textit{dataset} e dispor em uma nuvem de pontos. Uma nuvem de pontos é um conjunto de pontos apresentados em um mesmo sistema de coordenadas tridimensional (Figura \ref{fig:point_cloud_example}) que possuem diversas finalidades, como criar modelos em 3D de animações, renderizações, objetos manufaturados, entre outros. 
+A etapa de pré-processamento serve para manipular os dados do \textit{dataset} e dispor em uma nuvem de pontos.
+No final da fase de pré-processamento, o produto esperado é uma nuvem de pontos da superfície que foi escaneada pelo sonar. Esse resultado servirá como entrada para o próximo processo.
 
 \begin{figure}[H]
     \centering
@@ -72,21 +73,25 @@ A etapa de pré-processamento serve para manipular os dados do \textit{dataset} 
     \begin{subfigure}[t]{0.32\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/point_cloud_example_tank.png}
         \caption{Sonar submerso no fundo do tanque d'água.}
+        \label{fig:point_cloud_example_a}
     \end{subfigure}
     \hspace{3em}
     \begin{subfigure}[t]{0.32\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/point_cloud_example.png}
         \caption{Nuvem de pontos gerada.}
+        \label{fig:point_cloud_example_b}
     \end{subfigure}
     \fonte{\cite{dong2017underwater}.}
 \end{figure}
 
-No final da fase de pré-processamento, o produto esperado é uma nuvem de pontos da superfície que foi escaneada pelo sonar. Esse resultado servirá como entrada para o próximo processo.
+Na Figura \ref{fig:point_cloud_example_a} é possível observar um sonar MSIS mergulhado em um recipiente com água.
+O sensor faz o reconhecimento das paredes do recipiente e gera uma nuvem de pontos (Figura \ref{fig:point_cloud_example_b}).
+
 
 \section{Filtragem}
 \label{sec:filtragem}
 
-O processo de filtragem ou \textit{denoising} é composto por um conjunto de filtros em forma de funções que tem como objetivo remover informações desnecessárias da nuvem de pontos, como ruídos e \textit{outliers}\footnote{\textit{Outliers} é um termo da área da estatística utilizado para referênciar elementos atípicos ou observações que estão muito afastadas do restante da série.}.
+O processo de filtragem ou \textit{denoising} é composto por um conjunto de filtros em forma de funções que tem como objetivo remover ou atenuar informações desnecessárias da nuvem de pontos, como ruídos e \textit{outliers}\footnote{\textit{Outliers} é um termo da área da estatística utilizado para referênciar elementos atípicos ou observações que estão muito afastadas do restante da série.}.
 O resultado da etapa de filtragem é uma nuvem de pontos mais limpa e legível, como ilustrado na Figura \ref{fig:point_cloud_denoise}. 
 Desse modo, com um conjunto de pontos sem ruídos, torna mais simples o processo para ligar os pontos e formar um modelo tridimensional.
 
@@ -110,6 +115,7 @@ Para realizar essa etapa, os filtros foram separados em dois grupos.
 O primeiro grupo é composto por filtros simples, porém removem maior parte dos pontos desnecessários. 
 O segundo conjunto é formado por filtros mais complexos onde muitos já estão implementados na PCL (Seção \ref{sec:pcl}).
 Os filtros simples são representados pelo filtro por ângulo, filtro por intensidade e filtro por distância mínima, enquanto que os filtros complexos, são retratados pelo Filtro de Grade de \textit{Voxels}\footnote{Um \textit{voxel} é um \textit{pixel} que contém volume em um espaço tridimensional. Fazendo uma analogia, o \textit{voxel} seria um \textit{pixel} em 3D.}, Filtro de Suavização e o Filtro Estatístico de Remoção de \textit{Outliers}.
+
 
 \subsection{Filtro por Ângulo}
 \label{sec:angle_filter}

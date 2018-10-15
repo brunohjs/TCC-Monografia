@@ -264,6 +264,32 @@ O simulador do sonar possui alguns parâmetros de simulação que são definidos
 
 Esses parâmetros afetam no processamento do simulador e resolução da imagem. Quanto maior o número de \textit{bins}, melhor será a qualidade da imagem acústica. A Figura \ref{fig:gpu_sonar_sim} ilustra o método utilizado no simulador e descrito nessa seção.
 
+\section{Nuvem de Pontos}
+\label{sec:point_cloud}
+Uma nuvem de pontos é um conjunto de pontos expresso em um mesmo sistema de coordenadas, que possuem diversas finalidades, como criar modelos em 3D de animações, renderizações, objetos manufaturados, entre outros.. 
+Em um sistema de coordenadas tridimensional, estes pontos são definidos por coordenadas X, Y e Z e comumente têm o objetivo de representar a superfície externa de um objeto.
+
+\section{Malha}
+\label{sec:mesh}
+Uma malha, também conhecida como malha de polígonos, malha de triângulos ou superfície, é um modelo que descreve um objeto tridimensional nos campos da computação gráfica. 
+A malha é composta por um conjunto de pontos ou uma nuvem de pontos e uma coleção de faces, onde cada face é constituída por um conjunto de vértices. 
+As faces geralmente são constituídas de triângulos ou quadriláteros, uma vez que estas formas simplificam o processo de renderização.
+
+A Figura \ref{fig:bunny_example} ilustra a diferença entre uma nuvem de pontos e uma malha tridimensional.
+
+\begin{figure}[H]
+    \centering
+    \caption{Diferença entre nuvem de pontos (esquerda) e uma malha de polígonos (direita).}
+    \includegraphics[scale=0.3]{dados/figuras/bunny_example.png}
+    \label{fig:bunny_example}
+\end{figure}
+
+Um modelo tridimensional pode ser descrito de forma explícita ou implícita.
+A forma explícita é representada por um conjunto de vértices e por um conjunto de faces, que se relacionam para formar um objeto em 3D.
+Por sua vez, na forma implícita o conjunto de pontos já está organizado em forma de matriz, gerando automaticamente o conjunto de faces. 
+Além disso, por ser organizado em forma de matriz, o modelo implícita torna a malha em uma espécie de imagem em 3D, possibilitando a aplicação de transformações utilizadas em processamento de imagens digitais, tais como os filtros digitais (na Seção \ref{sec:filtragem} é abordado alguns filtros). 
+
+
 \section{\textit{Point Cloud Library}}
 \label{sec:pcl}
 
@@ -281,3 +307,41 @@ Em paralelo, \cite{strawlab2012} adaptou parte da PCL para a linguagem python.
 \end{figure}
 
 A Figura \ref{fig:pcl_example} ilustra um exemplo da aplicação da PCL em uma nuvem de pontos. Na imagem a esquerda mostra uma nuvem de pontos adquirida a partir de um sensor a laser, a imagem do meio mostra a nuvem resultante após passar por um filtro\footnote{O filtro utilizado se chama \textit{StatisticalOutlierRemoval} (filtro estatístico de remoção de \textit{outliers}) descrito na Seção \ref{sec:statistical_outlier_removal}. A documentação do filtro se encontra em: \url{http://pointclouds.org/documentation/tutorials/statistical_outlier.php}.}, por último, os pontos descartados são mostrados na figura na direita.
+
+\section{Filtros Espaciais}
+Filtros espaciais são um conjunto de técnicas de processamento de imagens que operam os valores de uma vizinhança para modificar uma imagem digital (atuando diretamente nos \textit{pixels} da imagem). 
+A vizinhança e o \textit{pixel} que estão sendo operados, estão organizados em uma matriz, chamada de \textit{kernel} ou janela. 
+Quanto maior o tamanho da janela, maior será a intensidade do filtro.
+Para fazer a modificação, é necessário utilizar uma função que combine valores de um certo número de \textit{pixels} da imagem de entrada com valores do \textit{kernel}, para gerar o valor resultante na imagem de saída (Figura \ref{fig:image_filter}).
+Existem diversos filtros e diversos tipos de \textit{kernels}, entre eles estão o filtro gaussiano e o filtro de mediana.
+
+\begin{figure}[H]
+    \centering
+    \caption{Aplicação de um filtro em uma imagem de entrada e seu resultado na imagem de saída.}
+    \includegraphics[scale=0.4]{dados/figuras/image_filters.png}
+    \label{fig:image_filter}
+\end{figure}
+
+
+\subsection{Filtro Gaussiano}
+\label{sec:gaussian_filter}
+
+O Filtro Gaussiano é um operador de convolução 2D (varredura de imagem por uma máscara), que é usado para suavizar bordas em imagens e remover ruídos, como mostra a Figura \ref{fig:gaussian_filter}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Aplicação do Filtro Gaussiano. Imagem original à esquerda, e imagem filtrada à direita.}
+    \includegraphics[scale=0.8]{dados/figuras/image_gaussian_filter.png}
+    \label{fig:gaussian_filter}    
+\end{figure}
+
+\subsection{Filtro de Mediana}
+\label{sec:median_filter}
+
+Filtro da mediana é uma transformação utilizada para suavizar ruído do tipo impulsivo em sinais e imagens digitais.
+
+\begin{figure}[H]
+    \centering
+    \caption{Aplicação do Filtro de Mediana. Imagem com ruído à esquerda, e imagem filtrada à direita.}
+    \includegraphics[scale=0.45]{dados/figuras/image_median_filter.png}    
+\end{figure}
