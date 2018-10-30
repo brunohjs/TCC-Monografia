@@ -189,7 +189,7 @@ A Figura \ref{fig:outlier_filter} exemplifica a aplicação do filtro. Na imagem
 
 \begin{figure}[H]
     \centering
-    \caption{Exemplo do uso do SORF.}
+    \caption{Exemplo de uso do SORF.}
     \includegraphics[scale=0.6]{dados/figuras/outlier_filter.jpg}
     \fonte{Adaptado de \cite{rusu2011pcl}.}
     \label{fig:outlier_filter}
@@ -325,7 +325,146 @@ Na Figura \ref{fig:delaunay_theorem} há outro exemplo de \textit{flip}. A Figur
 \section{Comparação}
 \label{sec:comparacao}
 
-A comparação é a última etapa do processo de desenvolvimento. Essa parte é possível fazer a comparação entre dois modelos e determinar o quanto se perdeu ou ganhou em relação ao volume. Na fase de comparação será possível modelar coletas do mesmo local em diferentes períodos e fazer a comparação entre os resultados obtidos.
+A comparação é a última etapa do processo de desenvolvimento. 
+Essa parte é possível fazer a comparação entre dois modelos e determinar o quanto se perdeu ou ganhou em relação ao volume e superfície. 
+A principal aplicação é modelar coletas do mesmo local em diferentes períodos e fazer a comparação entre os resultados alcançados. 
+Os resultados são obtidos a partir da diferença entre dois modelos reconstruídos, portanto, só há sentido calcular o volume e superfície de cada modelo nessa etapa de comparação.
+
+\subsection{Cálculo de Superfície}
+\label{sec:surface_calc}
+
+O cálculo da área de superfície é importante para estimar a qualidade da reconstrução.
+A superfície é uma malha de triângulos, portanto para calcular a área total, basta somar a área de cada triângulo contido nela. 
+Para esse tipo de cálculo foi utilizada a fórmula de Heron (ou de Herão), que é capaz de calcular a área de qualquer tipo de triângulo em função das medidas dos seus três lados.
+
+A fórmula de Heron é mostrada pela Equação \ref{eq:heron}, onde $a$, $b$ e $c$ são os três lados e $p$ representa o semiperímetro do triângulo (Equação \ref{eq:heron_p}).
+
+\begin{equation}
+    \label{eq:heron}
+    A = \sqrt{p(p-a)(p-b)(p-c)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:heron_p}
+    p = \frac{a+b+c}{2}
+\end{equation}
 
 
+\subsection{Cálculo de Volume}
+\label{sec:volume_calc}
 
+O processo de cálculo de volume é fundamental para realizar a comparação entre reconstruções.
+O volume é formado a partir da projeção da superfície do modelo em um plano base, como mostra na Figura \ref{fig:prism}.
+O resultado da projeção é um conjunto de poliedros irregulares, onde cada poliedro possui uma base inferior diferente da base superior.
+
+\begin{figure}[H]
+    \centering
+    \caption{Formação do volume a partir da superfície.}
+    \includegraphics[scale=0.5]{dados/figuras/prisms.png}
+    \fonte{\cite{berg2008computational}}
+    \label{fig:prism}
+\end{figure}
+
+O poliedro irregular é semelhante ao prisma regular, porém suas bases são diferentes (Figura \ref{fig:polyhedron}). Por esse motivo, não se pode utilizar a fórmula convencional de cálculo de volume de prismas regulares.  
+Porém, apesar de ser pouco provável, pode haver poliedros com a forma de um prisma regular (quando os 3 pontos da base superior se encontram na mesma altura). 
+O algoritmo é capaz de tratar esse caso específico.
+
+\begin{figure}[H]
+    \centering
+    \caption{Exemplo de um poliedro irregular.}
+    \begin{subfigure}[t]{0.25\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/pol_line.png}
+        \caption{Poliedro em faces.}
+        \label{fig:polyhedron1}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{0.25\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/pol_solid.png}
+        \caption{Poliedro em sólido.}
+        \label{fig:polyhedron2}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{0.25\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/pol_sep.png}
+        \caption{Prisma e pirâmide destacados.}
+        \label{fig:polyhedron3}
+    \end{subfigure}
+    \label{fig:polyhedron}
+\end{figure}
+
+Antes de realizar o procedimento, é importante saber que os dados utilizados como parâmetros são 6 pontos, sendo os 3 pontos da base inferior e os 3 pontos da base superior do poliedro irregular.
+Para realizar esse cálculo, é necessário dividir o poliedro irregular na altura do ponto da base superior mais próximo à base inferior.
+O resultado da divisão é uma pirâmide irregular na parte superior e um prisma regular na parte inferior, como ilustra a Figura \ref{fig:polyhedron3}.
+Os pontos $b$ e $e$ são projeções dos pontos $a$, $c$ e $d$, ilustrado na Figura \ref{fig:pyramid_i}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Poliedro separado em dois volumes.}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/pyramid_line3.png}
+        \caption{Pirâmide irregular.}
+        \label{fig:pyramid_i}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/prism_line2.png}
+        \caption{Prisma regular.}
+        \label{fig:prism_i}
+    \end{subfigure}
+\end{figure}
+
+A separação torna o cálculo do volume mais simples, como mostra a Equação \ref{eq:volume_polyhedron}. 
+O volume total ($V_t$) é composto pela soma do volume da pirâmide ($V_{pi}$) com o volume do prisma ($V_{pr}$).
+Na Equação \ref{eq:volume_pyramid}, o volume da pirâmide é $1/3$ do produto da base ($b_{pi}$) pela altura ($h_{pi}$). 
+Por fim, o volume do prisma é o produto da base ($b_{pr}$) pela altura  ($h_{pr}$), como mostra a Equação \ref{eq:volume_prism}.
+A área da base da pirâmide é um trapézio retângulo e é descrita pela Fórmula \ref{eq:trap_rect}, onde $B$ é a base maior ($\left | \overrightarrow{cb} \right |$)), $b$ é a base menor ($\left | \overrightarrow{de} \right |$)) e $h$ é a altura ($\left | \overrightarrow{be} \right |$)
+
+
+\begin{multicols}{3}
+    \begin{equation}
+        \label{eq:volume_polyhedron}
+        V_t = V_{pr} + V_{pi}
+    \end{equation}
+    \begin{equation}
+        \label{eq:volume_prism}
+        V_{pi} = \frac{1}{3} \cdot b_{pi} \cdot h_{pi}
+    \end{equation}
+    \begin{equation}
+        \label{eq:volume_pyramid}
+        V_{pr} = b_{pr} \cdot h_{pr}
+    \end{equation}
+\end{multicols}
+
+\begin{equation}
+    \label{eq:trap_rect}
+    b_{pi} = (B+b) \cdot h \cdot \frac{1}{2}
+\end{equation}
+
+\iffalse
+O Algoritmo \ref{alg:poly_alg} descreve o procedimento para o cálculo de volume de um poliedro irregular. 
+O parâmetro de entrada são dois conjuntos de pontos que representam o triângulo da base inferior ($T_{inf}$) e o triângulo da base superior ($T_{sup}$).
+Suponto que $p_a$ é o ponto mais próximo ao plano base, $p_b$ e $p_e$ são projeções dos pontos $p_c$, $p_d$ e $p_a$ (como ocorre no exemplo da Figura \ref{fig:pyramid_i}).
+
+\vspace{1em}
+\begin{algorithm}[H]
+    \caption{Cálculo de Volume de um Poliedro Irregular}
+    \hspace{1em}
+    \KwIn{$T_{inf}$, $T_{sup}$}
+    \KwOut{$V_t$}
+    \For {$ponto \in T_{sup}$} {
+        \If {$ponto$ for mais próximo ao plane base} {
+            $p_a \leftarrow ponto$ \\
+        }
+    }
+    $p_b \leftarrow$ proj($p_a$, $p_c$) \\
+    $p_e \leftarrow$ proj($p_a$, $p_d$) \\
+    
+    $b_{pi} \leftarrow$ AreaBasePiramide($p_b$, $p_c$, $p_d$, $p_e$) \\
+    $V_{pi} \leftarrow b_{pi} \cdot \left | proj(\overrightarrow{p_b p_a}, \overrightarrow{p_b p_e}) \right |$ \\
+    $b_{pr} \leftarrow$ AreaBasePrisma($p_f$, $p_g$, $p_h$) \\
+    $V_{pr} \leftarrow b_{pr} \cdot \left |\overrightarrow{p_a p_f} \right |$ \\
+    $V_t \leftarrow V_{pi} + V_{pr}$ \\
+    \label{alg:poly_alg}
+    \hspace{1em}
+\end{algorithm}
+\fi

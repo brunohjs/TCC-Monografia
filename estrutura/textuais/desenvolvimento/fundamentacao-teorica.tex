@@ -269,6 +269,7 @@ Esses parâmetros afetam no processamento do simulador e resolução da imagem. 
 Uma nuvem de pontos é um conjunto de pontos expresso em um mesmo sistema de coordenadas, que possuem diversas finalidades, como criar modelos em 3D de animações, renderizações, objetos manufaturados, entre outros.. 
 Em um sistema de coordenadas tridimensional, estes pontos são definidos por coordenadas X, Y e Z e comumente têm o objetivo de representar a superfície externa de um objeto.
 
+\iffalse
 \section{Malha}
 \label{sec:mesh}
 Uma malha, também conhecida como malha de polígonos, malha de triângulos ou superfície, é um modelo que descreve um objeto tridimensional nos campos da computação gráfica. 
@@ -288,15 +289,14 @@ Um modelo tridimensional pode ser descrito de forma explícita ou implícita.
 A forma explícita é representada por um conjunto de vértices e por um conjunto de faces, que se relacionam para formar um objeto em 3D.
 Por sua vez, na forma implícita o conjunto de pontos já está organizado em forma de matriz, gerando automaticamente o conjunto de faces. 
 Além disso, por ser organizado em forma de matriz, o modelo implícita torna a malha em uma espécie de imagem em 3D, possibilitando a aplicação de transformações utilizadas em processamento de imagens digitais, tais como os filtros digitais (na Seção \ref{sec:filtragem} é abordado alguns filtros). 
-
+\fi
 
 \section{\textit{Point Cloud Library}}
 \label{sec:pcl}
 
-A PCL (Biblioteca de Nuvem de Pontos, do inglês \textit{Point Cloud Library}) é um \textit{framework} para o processamento de imagens e nuvens de pontos em 2D/3D desenvolvido para a linguagem \textit{C++}. 
+A PCL (Biblioteca de Nuvem de Pontos, do inglês \textit{Point Cloud Library}) é um \textit{framework} para o processamento de imagens e nuvens de pontos em 2D/3D desenvolvido para a linguagem \textit{C++}. Contudo, há adaptações para outras linguagens, como a adaptação realizada por \cite{strawlab2012} para a linguagem python. 
 O \textit{framework} é um projeto de código aberto em larga escala criado por \cite{rusu2011pcl}. 
 A PCL contém diversos algoritmos no estado da arte, incluindo filtros, estimação de \textit{features}, reconstrução de superfícies, segmentação, entre outros. 
-Em paralelo, \cite{strawlab2012} adaptou parte da PCL para a linguagem python. 
 
 \begin{figure}[H]
     \centering
@@ -306,8 +306,9 @@ Em paralelo, \cite{strawlab2012} adaptou parte da PCL para a linguagem python.
     \fonte{\cite{rusu2011pcl}.}
 \end{figure}
 
-A Figura \ref{fig:pcl_example} ilustra um exemplo da aplicação da PCL em uma nuvem de pontos. Na imagem a esquerda mostra uma nuvem de pontos adquirida a partir de um sensor a laser, a imagem do meio mostra a nuvem resultante após passar por um filtro\footnote{O filtro utilizado se chama \textit{StatisticalOutlierRemoval} (filtro estatístico de remoção de \textit{outliers}) descrito na Seção \ref{sec:statistical_outlier_removal}. A documentação do filtro se encontra em: \url{http://pointclouds.org/documentation/tutorials/statistical_outlier.php}.}, por último, os pontos descartados são mostrados na figura na direita.
+A Figura \ref{fig:pcl_example} ilustra um exemplo da aplicação da PCL em uma nuvem de pontos. Na imagem a esquerda mostra uma nuvem de pontos adquirida a partir de um sensor a laser, a imagem do meio mostra a nuvem resultante após passar por um filtro\footnote{O filtro utilizado se chama \textit{Statistical Outlier Removal} (filtro estatístico de remoção de \textit{outliers}) descrito na Seção \ref{sec:statistical_outlier_removal}. A documentação do filtro se encontra em: \url{http://pointclouds.org/documentation/tutorials/statistical_outlier.php}.}, por último, os pontos descartados são mostrados na figura na direita.
 
+\iffalse
 \section{Filtros Espaciais}
 Filtros espaciais são um conjunto de técnicas de processamento de imagens que operam os valores de uma vizinhança para modificar uma imagem digital (atuando diretamente nos \textit{pixels} da imagem). 
 A vizinhança e o \textit{pixel} que estão sendo operados, estão organizados em uma matriz, chamada de \textit{kernel} ou janela. 
@@ -345,3 +346,5 @@ Filtro da mediana é uma transformação utilizada para suavizar ruído do tipo 
     \caption{Aplicação do Filtro de Mediana. Imagem com ruído à esquerda, e imagem filtrada à direita.}
     \includegraphics[scale=0.45]{dados/figuras/image_median_filter.png}    
 \end{figure}
+
+\fi
