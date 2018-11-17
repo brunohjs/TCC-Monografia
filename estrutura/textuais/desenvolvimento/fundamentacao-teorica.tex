@@ -3,22 +3,25 @@
 
 % FUNDAMENTAÇÃO-TEÓRICA-------------------------------------------------------
 
-\section{Sensor Sonar}
+\section{Sensor sonar}
 \label{sec:sonar}
 
-\subsection{Princípio do Sonar}
+\subsection{Princípio do sonar}
 \label{sec:principio-sonar}
 
-O sonar é um sensor capaz de calcular a distância de objetos em um meio através de ondas sonoras. O sensor emite um pulso de onda que percorre o meio até colidir em um obstáculo/objeto ou ser absorvido completamente pelo meio. Após colidir, parte da onda é refletida e retorna para o sensor (a origem do pulso) com uma intensidade menor. Ao ser captada pelo sensor, a onda é decomposta em várias partes, onde cada parte é conhecida como \textit{bin}. O conjunto de \textit{bins} que compõe uma onda, é chamado de \textit{beam}, como mostra a Figura \ref{fig:imagem_acustica}.
-
-De maneira geral, o sonar poder ser do tipo passivo ou ativo. O sonar passivo apenas escuta o meio com o intuito de filtrar os sinais sonoros de diferentes objetos do ruído do ambiente. Ao passo que, o sonar ativo tem a capacidade de emitir sinais acústicos e captar o retorno do pulso. O alcance de um pulso de um sonar ativo e a qualidade do sinal\footnote{Quanto maior a qualidade do sinal, maior será o nível de detalhamento e discriminação do alvo e menor será a quantidade de ruído.} retornado está relacionado com a frequência de operação do sensor (Tabela \ref{tab:freq-acustica}).
+O sonar é um sensor capaz de calcular a distância de objetos em um meio através de ondas sonoras. 
+O sensor emite um pulso de onda que percorre o meio até colidir em um obstáculo/objeto ou ser absorvido completamente pelo meio. 
+Após colidir, parte da onda é refletida e retorna para o sensor (a origem do pulso) com uma intensidade menor. 
+Ao ser captada pelo sensor, a onda é decomposta em diversos fragmentos, onde cada parte é conhecida como \textit{bin}. O conjunto de \textit{bins} que compõe uma onda, é chamado de \textit{beam}, como mostra a Figura \ref{fig:imagem_acustica}.
 
 \begin{figure}[H]
     \centering
-    \caption{Representação de um \textit{bin} e um \textit{beam} em uma imagem acústica}
+    \caption{Representação do \textit{bin} e do \textit{beam} em uma imagem acústica}
+    \includegraphics[scale=0.4]{dados/figuras/imagem_acustica.jpg}
     \label{fig:imagem_acustica}
-    \includegraphics[scale=0.3]{dados/figuras/imagem_acustica.jpg}
 \end{figure}
+
+De maneira geral, o sonar poder ser do tipo passivo ou ativo. O sonar passivo apenas escuta o meio com o intuito de filtrar os sinais sonoros de diferentes objetos do ruído do ambiente. Ao passo que, o sonar ativo tem a capacidade de emitir sinais acústicos e captar o retorno do pulso. O alcance de um pulso de um sonar ativo e a qualidade do sinal\footnote{Quanto maior a qualidade do sinal, maior será o nível de detalhamento e discriminação do alvo e menor será a quantidade de ruído.} retornado está relacionado com a frequência de operação do sensor (Tabela \ref{tab:freq-acustica}).
 
 Sinais de alta frequência possuem um curto alcance, porém produz um sinal de retorno que carrega mais informações e com uma alta qualidade. Ao contrário, os sinais de baixa frequência são menos atenuados pelo meio, resultando em uma melhor propagação, mas em compensação, a quantidade de informação no sinal de retorno é menor.
 
@@ -77,8 +80,47 @@ Na Tabela \ref{tab:vel_som}, \cite{halliday2008fundamentals} comprovou esse fato
     \fonte{\cite{halliday2008fundamentals}.}
 \end{table}
 
+\subsection{Imagem acústica}
+\label{sec:imagem_acustica}
 
-\subsection{Sonar \textit{Singlebeam} e \textit{Multibeam}}
+As imagens acústicas são diferentes das imagens convencionais produzidas por sensores ópticos, por esse motivo a interpretação se torna mais dificultosa.
+Para poder interpretá-las é preciso entender o processo de geração de um \textit{beam}. 
+
+\begin{figure}[H]
+    \centering
+    \caption{Geração de um \textit{beam} acústico.}
+    \includegraphics[scale=0.4]{dados/figuras/acoustic_beam.png}
+    \fonte{\cite{ribas2010underwater}}
+    \label{fig:acoustic_beam}
+\end{figure}
+
+Como ilustra a Figura \ref{fig:acoustic_beam}, o pulso acústico colide com obstáculos e retorna um valor de sinal de intensidade. 
+O primeiro sinal de intensidade retornado é resultante da colisão com o solo por conta do ângulo de abertura vertical do \textit{beam} acústico.
+O segundo sinal é mais forte por conta do ângulo de colisão do pulso com o obstáculo ser menor.
+
+As imagens acústicas podem apresentar alguns problemas, como a ambiguidade e a reverberação, exibidos pela Figura \ref{fig:acoustic_image}. 
+A ambiguidade é uma indeterminação que ocorre quando dois objetos estão próximos ou na mesma posição vertical e, consequentemente, acabam ocupando o mesmo espaço no \textit{bin} da imagem acústica, resultando em um sinal de intensidade único para os dois objetos.
+A reverberação é um efeito gerado quando o pulso acústico é refletido de forma contínua, ocasionando a replicação atenuada no retorno do sinal.
+
+\begin{figure}[H]
+    \centering
+    \caption{Problemas que podem ser gerados em imagens acústicas.}
+    \label{fig:acoustic_image}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/ambiguity.png}
+        \caption{Ambiguidade.}
+        \label{fig:indertemination}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/reflectance.png}
+        \caption{Reverberação.}
+        \label{fig:beam_reflected}
+    \end{subfigure}
+    \fonte{\cite{ribas2010underwater}}
+\end{figure}
+
+
+\subsection{Sonar \textit{singlebeam} e \textit{multibeam}}
 \label{sec:single-multibeam}
 Além da classificação passiva e ativa, o sonar pode ser agrupado de diversas maneiras, uma delas referente a área de cobertura do sinal.
 O sonar \textit{singlebeam} trabalha com apenas um único pulso de onda (Figura \ref{fig:echo-sounder}). Geralmente ele é encontrado na parte inferior dos robôs e posicionado para baixo com o objetivo de encontrar a altitude do robô em relação ao fundo do corpo d'água em que está. Ainda pode ser posicionado nas partes laterais, frontal ou posterior para ser utilizado como um sensor de colisão.
@@ -120,7 +162,6 @@ Por outro lado, o sonar \textit{multibeam} é mais complexo, composto por um con
 \subsection{Sonar MSIS}
 \label{sec:msis}
 O MSIS (do inglês \textit{Mechanical Scanning Image Sonar}) é um sonar mecânico \textit{singlebeam} de varredura de 360º, ou seja, possui um atuador no cabeçote do sensor para poder girar a partir de passos pré-definidos e imagear o ambiente em seu entorno, ilustrado na Figura \ref{fig:msis}. 
-O sensor realiza o escaneamento no plano horizontal, onde o cabeçote gira em um incremento de um ângulo pré-estabelecido, efetuando uma leitura para cada incremento, como mostra a Figura \ref{fig:msis-scanning}.
 Para exemplificar, na Figura \ref{fig:msis-image}, apresenta uma imagem de satélite de uma doca com a sobreposição de uma imagem acústica obtida com um MSIS.
 
 \begin{figure}[H]
@@ -131,17 +172,19 @@ Para exemplificar, na Figura \ref{fig:msis-image}, apresenta uma imagem de saté
     \label{fig:msis-image}
 \end{figure}
 
+O sensor efetua a leitura de um \textit{beam} para cada incremento de ângulo ($\psi$). 
+O \textit{beam} possui uma largura horizontal ($\theta$) e uma largura vertical ($\phi$), onde ambas variam em função do tamanho máximo de alcance ($r$) do sinal acústico (Figura \ref{fig:beam}).
+
 \begin{figure}[H]
     \centering
-    \caption{Representação do processo de escaneamento de um MSIS.}
-    \includegraphics[scale=0.3]{dados/figuras/msis-scanning.png}
-    \fonte{\cite{ribas2010underwater}}
-    \label{fig:msis-scanning}
+    \caption{Vista em perspectiva de um \textit{beam}.}
+    \includegraphics[scale=0.3]{dados/figuras/beam.png}
+    \fonte{\cite{mallios2016toward}}
+    \label{fig:beam}
 \end{figure}
 
-O processo de escaneamento pode ser vagaroso por conta do transdutor rotar os 360 graus\footnote{Geralmente o equipamento possibilita a configuração para um range angular menor do que 360º, tornando menor o tempo de leitura de uma imagem completa.}, porém seu baixo custo e peso torna o modelo viável para aplicações com alto risco de perda do equipamento como no caso das geleiras.
+O processo de escaneamento pode ser vagaroso por conta do transdutor rotar os 360 graus\footnote{Geralmente o equipamento possibilita a configuração para um range angular menor do que 360º, tornando menor o tempo de leitura de uma imagem completa.}, porém seu baixo custo e peso torna o modelo viável para aplicações com alto risco de perda do equipamento.
 
-%Precisa falar dos problemas com o MSIS (shadows, imagens distorcidas, ambiguidades, etc..)
 
 \section{\textit{Robot Operating System}}
 \label{sec:ros}
@@ -232,11 +275,11 @@ A intensidade é calculada de acordo com os canais azul e verde, que representam
     \centering
     \caption{Imagens correspondentes geradas pelo \textit{GPU Sonar Simulator}}
     \label{fig:shader_output}
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.7\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/shader_output1.png}
         \caption{Imagem gerada pelo \textit{shader}}
     \end{subfigure}
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.7\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/shader_output2.png}
         \caption{Imagem acústica resultante.}
     \end{subfigure}
@@ -264,7 +307,7 @@ O simulador do sonar possui alguns parâmetros de simulação que são definidos
 
 Esses parâmetros afetam no processamento do simulador e resolução da imagem. Quanto maior o número de \textit{bins}, melhor será a qualidade da imagem acústica. A Figura \ref{fig:gpu_sonar_sim} ilustra o método utilizado no simulador e descrito nessa seção.
 
-\section{Nuvem de Pontos}
+\section{Nuvem de pontos}
 \label{sec:point_cloud}
 Uma nuvem de pontos é um conjunto de pontos expresso em um mesmo sistema de coordenadas, que possuem diversas finalidades, como criar modelos em 3D de animações, renderizações, objetos manufaturados, entre outros.. 
 Em um sistema de coordenadas tridimensional, estes pontos são definidos por coordenadas X, Y e Z e comumente têm o objetivo de representar a superfície externa de um objeto.
@@ -307,6 +350,22 @@ A PCL contém diversos algoritmos no estado da arte, incluindo filtros, estimaç
 \end{figure}
 
 A Figura \ref{fig:pcl_example} ilustra um exemplo da aplicação da PCL em uma nuvem de pontos. Na imagem a esquerda mostra uma nuvem de pontos adquirida a partir de um sensor a laser, a imagem do meio mostra a nuvem resultante após passar por um filtro\footnote{O filtro utilizado se chama \textit{Statistical Outlier Removal} (filtro estatístico de remoção de \textit{outliers}) descrito na Seção \ref{sec:statistical_outlier_removal}. A documentação do filtro se encontra em: \url{http://pointclouds.org/documentation/tutorials/statistical_outlier.php}.}, por último, os pontos descartados são mostrados na figura na direita.
+
+\section{Pymesh}
+\label{sec:pymesh}
+O Pymesh é uma biblioteca para a linguagem Python de prototipagem rápida focada em processamento geométrico 2D e 3D. 
+A biblioteca trabalha apenas com superfícies e geometrias, diferente da PCL que trabalha apenas com nuvem de pontos. 
+O trabalho utiliza da biblioteca apenas a ferramenta para fazer a separação de uma malha em sub-malhas, presente na etapa de reconstrução.
+Entre as funcionalidades da ferramenta, estão: 
+
+\vspace{0.5em}
+\begin{itemize}
+    \item Escrita e leitura em diversos tipos de formatos de arquivos que trabalham com processamento 3D (\textit{.obj}, \textit{.ply}, \textit{.stl}, \textit{.mesh}, etc...);
+    \item Geração e manipulação de malhas de pontos através de vértices, faces e \textit{voxels};
+    \item Funções booleanas com malhas de pontos, tais como interse;
+\end{itemize}
+\vspace{1em}
+
 
 \iffalse
 \section{Filtros Espaciais}

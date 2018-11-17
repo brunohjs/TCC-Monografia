@@ -43,14 +43,126 @@ A etapa de comparação requer duas superfícies na entrada do processo, para ge
     \label{fig:etapas}
 \end{figure}
 
-\section{Coleta de Dados}
+\section{Coleta de dados}
 \label{sec:coleta_dados}
 
-A coleta de dados será realizada de duas formas: em simulação virtual do ambiente e \textit{in loco}. A coleta em simulação virtual facilita a obtenção de dados, por não ser necessário possuir um sensor ou robô e por dispensar planejamento logístico que uma saída de campo requer. Contudo, é importante fazer a coleta \textit{in loco}, pois, as informações obtidas em simulação não será próximo do real quanto às coletados em campo.
+A coleta de dados foi realizada de duas formas: em simulação virtual e \textit{in loco}. 
+A coleta em simulação virtual facilita a obtenção de dados, por não haver a necessidade de possuir um sensor ou robô e por dispensar planejamento logístico que uma saída de campo requer. 
+Contudo, é importante fazer a coleta \textit{in loco}, pois possibilita realizar a comparação do desempenho do algoritmo e, além disso, as informações obtidas serão mais próximo do mundo real quanto às coletadas em simulação.
 
-A obtenção de dados por simulação virtual contará com o auxílio de \textit{softwares} e ferramentas. O \textit{software} Gazebo  (seção \ref{sec:gazebo}) será o responsável por simular o ambiente virtual e executará dentro do ROS (seção \ref{sec:ros}) junto com outros pacotes, tais como o modelo de robô ROV (RexROV) e o simulador do sonar MSIS (seção \ref{sec:gpu_sonar_sim}). O RexROV é um modelo de robô desenvolvido pelos autores \cite{manhaes2016uuv} e está incluso no pacote \textit{UUV Simulator}.
+\subsection{Simulação virtual}
+\label{sec:simulation}
 
-A aquisição de dados pela coleta em campo, será realizado no local ainda a ser definido e será utlizado o ROV, modelo LBV300-5\footnote{Informações completas do modelo do ROV em: \url{http://www.teledynemarine.com/lbv300-5}} (Figura \ref{fig:rov_nautec}), do grupo do NAUTEC do C3. Acoplado ao robô, será utilizado o sensor MSIS modelo Tritech Micron Sonar\footnote{Informações completas do modelo do sensor em: \url{http://www.tritech.co.uk/media/products/small-rov-mechanical-sector-scanning-sonar-tritech-micron.pdf?id=e3070c7b}} que fará a captura dos dados.
+A obtenção de dados por simulação virtual contará com o auxílio de \textit{softwares} e ferramentas. 
+O \textit{software} Gazebo será o responsável por simular o ambiente virtual, enquanto que o ROS será responsável por executar o modelo do veículo ROV e o simulador do sonar MSIS.
+O veículo ROV utilizado, chamado RexROV (Figura \ref{fig:rexrov}), foi desenvolvido pelos autores \cite{manhaes2016uuv} e está incluso no pacote \textit{UUV Simulator}.
+O ambiente de simulação, apresentado na Figura \ref{fig:environment}, representa o fundo de um corpo d'água.
+Assim como o robô, o ambiente de simulação também está disponível no pacote \textit{UUV Simulator}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Veículo e ambiente utilizado na simulação virtual.}
+    \label{fig:simulation}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/rexrov.png}
+        \caption{Veículo RexROV.}
+        \label{fig:rexrov}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[t]{0.55\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/environment.png}
+        \caption{Ambiente em simulação.}
+        \label{fig:environment}
+    \end{subfigure}
+\end{figure}
+
+Em simulação, as unidades utilizadas para o comprimento não estão definidas em metros, por esse motivo qualquer comprimento descrito no ambiente de simulação será na sigla \textit{uc} (unidades de comprimento).
+No ambiente, como mostra a Figura \ref{fig:scenaries}, foi acrescentado obstáculos para montar diferentes tipos de cenários.
+No cenário \textbf{a} e \textbf{b} foram acrescentadas a mesma parede, a diferença está na posição no segundo cenário está 5\textit{uc} mais distante em relação ao primeiro cenário.
+
+\begin{figure}[H]
+    \centering
+    \caption{Cenários criados para realizar o experimento.}
+    \label{fig:scenaries}
+    \begin{subfigure}[t]{0.328\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/scene3.png}
+        \caption{}
+        \label{fig:scene2}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.328\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/scene2.png}
+        \caption{}
+        \label{fig:scene1}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.328\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/scene4.png}
+        \caption{}
+        \label{fig:scene3}
+    \end{subfigure}
+\end{figure}
+
+O cenário \textbf{c} foi construído a partir do cenário \textbf{a}, onde ocorre a inclinação em 45º da parede e alongamento da sua altura para manter a mesma da parede do cenário anterior.
+A intenção é simular uma geleira em um estado inicial, representado pelo cenário \textbf{a}, e em um estado posterior após perder o volume inicial, representado pelos cenários \textbf{b} e \textbf{c}.
+Portanto, a comparação de volume acontecerá em dois contextos: o primeiro contexto será chamado de \textbf{AB}, onde os cenários \textbf{a} e \textbf{b} estão envolvidos, no qual simula uma perda de volume, pois \textbf{a} está 5\textit{uc} à frente de \textbf{b}; o segundo contexto será chamado de \textbf{AC}, onde os cenários \textbf{a} e \textbf{c} estão envolvidos, no qual há uma perda menor de volume em relação ao primeiro contexto.
+A Figura \ref{fig:dimensoes} exibe as dimensões das paredes utilizadas nas simulações.
+O contexto é um cenário onde há dois modelos reconstruídos, que serve para fazer a comparação entre esses modelos.
+
+\begin{figure}[H]
+    \centering
+    \caption{Dimensões das paredes.}
+    \label{fig:dimensoes}
+    \begin{subfigure}[t]{0.328\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/dim_lateral_ab.png}
+        \caption{Vista lateral entre \textbf{a} e \textbf{b}.}
+        \label{fig:dim_lateral_ab}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.328\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/dim_lateral_ac.png}
+        \caption{Vista lateral entre \textbf{a} e \textbf{c}.}
+        \label{fig:dim_lateral_ac}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.328\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/dim_frontal.png}
+        \caption{Vista frontal da parede.}
+        \label{fig:dim_frontal}
+    \end{subfigure}
+\end{figure}
+
+Em todos os \textit{datasets} criados, o ROV foi posicionado a uma distância de aproximadamente 25uc, iniciando a coleta na parte superior da superfície. 
+Após o início, o sensor faz a leitura completa de uma imagem acústica, ou seja, o transdutor percorrer de 0º à  180º, gerando um \textit{beam} por grau.
+Realizada a coleta de uma imagem acústica, o robô ativa os propulsores para se deslocar cerca de 0.7uc em direção ao solo. 
+Após o deslocamento, o processo de leitura se repete até o veículo encostar no leito do corpo d'água.
+
+
+\subsection{\textit{In loco}}
+\label{sec:in_loco}
+
+A aquisição de dados em campo foi realizada em uma piscina, como mostra a Figura \ref{fig:piscina}.
+A piscina possui o formato de um retângulo no qual há dois lados maiores e dois lados menores, onde um dos lados menores há uma escadaria.
+Nos experimentos, foram utilizados apenas os lados menores. 
+
+O ROV foi posicionado inicialmente à uma determinada distância da parede e próximo a superfície.
+O sensor faz a leitura da parede, percorrendo 180º e na sequência se desloca alguns centímetros verticalmente em direção ao fundo.
+Esse procedimento se repete até o robô encostar no fundo da piscina.
+No primeiro experimento, o ROV foi posicionado a 1,5 metros de distância da parede da piscina.
+Após concluir a varredura, o procedimento é repetido, porém à uma distância de 3 metros.
+O segundo experimento foi semelhante ao primeiro, porém foi realizado no outro lado, no qual possui uma escadaria, e as distâncias eram de 2,5 e 4 metros.
+
+\begin{figure}[H]
+    \centering
+    \caption{Piscina onde foram coletados os dados.}
+    \label{fig:piscina}
+    \begin{subfigure}[t]{0.25\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/piscina_1.jpg}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[t]{0.25\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/piscina_2.jpg}
+    \end{subfigure}
+\end{figure}
+
+Para fazer a coleta, foi utlizado o ROV, modelo LBV300-5\footnote{Informações completas do modelo do ROV em: \url{http://www.teledynemarine.com/lbv300-5}} (Figura \ref{fig:rov_nautec}), do grupo do NAUTEC do C3. 
+Acoplado ao robô, será utilizado o sensor MSIS modelo Tritech Micron Sonar\footnote{Informações completas do modelo do sensor em: \url{http://www.tritech.co.uk/media/products/small-rov-mechanical-sector-scanning-sonar-tritech-micron.pdf?id=e3070c7b}} que é responsável pela captura dos dados.
 
 \begin{figure}[H]
     \centering
@@ -59,56 +171,54 @@ A aquisição de dados pela coleta em campo, será realizado no local ainda a se
     \includegraphics[scale=0.5]{dados/figuras/rov_furg.jpg}
 \end{figure}
 
-Para analisar a diferença entre os dados de ambas coletas, será realizada comparações entre os resultados obtidos em cada procedimento. Os materiais coletados, formarão um \textit{dataset} que servirá como entrada no algoritmo de reconstrução.
-
 \section{Pré-processamento}
 
 A etapa de pré-processamento serve para manipular os dados do \textit{dataset} e dispor em uma nuvem de pontos.
-No final da fase de pré-processamento, o produto esperado é uma nuvem de pontos da superfície que foi escaneada pelo sonar. Esse resultado servirá como entrada para o próximo processo.
+No final da fase de pré-processamento, o produto gerado é uma nuvem de pontos da superfície que foi escaneada pelo sonar. Esse resultado servirá como entrada para o próximo processo.
+
+Nessa etapa, ocorre a escolha dos \textit{bins} que vão compor cada imagem.
+Deve ser selecionado um \textit{bin} por cada \textit{beam} da imagem acústica.
+O critério utilizado será o critério que escolhe o \textit{bin} com o maior sinal de intensidade do \textit{beam}.
 
 \begin{figure}[H]
     \centering
-    \caption{Nuvem de pontos gerada a partir de dados coletados por um sonar MSIS.}
+    \caption{Nuvem de pontos gerada a partir de dados coletados em simulação virtual por um sonar MSIS.}
     \label{fig:point_cloud_example}
-    \begin{subfigure}[t]{0.32\textwidth}
-        \includegraphics[width=\textwidth]{dados/figuras/point_cloud_example_tank.png}
-        \caption{Sonar submerso no fundo do tanque d'água.}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/scene2.png}
+        \caption{Ambiente em simulação virtual.}
         \label{fig:point_cloud_example_a}
     \end{subfigure}
-    \hspace{3em}
-    \begin{subfigure}[t]{0.32\textwidth}
-        \includegraphics[width=\textwidth]{dados/figuras/point_cloud_example.png}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/point_cloud.png}
         \caption{Nuvem de pontos gerada.}
         \label{fig:point_cloud_example_b}
     \end{subfigure}
-    \fonte{\cite{dong2017underwater}.}
 \end{figure}
 
-Na Figura \ref{fig:point_cloud_example_a} é possível observar um sonar MSIS mergulhado em um recipiente com água.
-O sensor faz o reconhecimento das paredes do recipiente e gera uma nuvem de pontos (Figura \ref{fig:point_cloud_example_b}).
+Na Figura \ref{fig:point_cloud_example} mostra o ambiente em simulação escaneado pelo sonar e a nuvem de pontos gerada.
+A etapa de pré-processamento não é responsável por filtrar a nuvem de pontos, por esse motivo que a nuvem gerada na Figura \ref{fig:point_cloud_example_b} possui uma grande quantidade de ruído.
 
 
 \section{Filtragem}
 \label{sec:filtragem}
 
 O processo de filtragem ou \textit{denoising} é composto por um conjunto de filtros em forma de funções que tem como objetivo remover ou atenuar informações desnecessárias da nuvem de pontos, como ruídos e \textit{outliers}\footnote{\textit{Outliers} é um termo da área da estatística utilizado para referênciar elementos atípicos ou observações que estão muito afastadas do restante da série.}.
-O resultado da etapa de filtragem é uma nuvem de pontos mais limpa e legível, como ilustrado na Figura \ref{fig:point_cloud_denoise}. 
-Desse modo, com um conjunto de pontos sem ruídos, torna mais simples o processo para ligar os pontos e formar um modelo tridimensional.
+Além disso, o objetivo é facilitar o processo de reconstrução e de cálculo de volume.
+O resultado da etapa de filtragem é uma nuvem de pontos mais limpa e legível, porém o processo de filtragem não é capaz de remover todas as informações desnecessárias, como ilustrado na Figura \ref{fig:point_cloud_denoise}.
 
 \begin{figure}[H]
     \centering
-    \caption{Remoção de ruído em uma nuvem de pontos.}
+    \caption{Processo de remoção de ruído em uma nuvem de pontos.}
     \label{fig:point_cloud_denoise}
-    \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{dados/figuras/noised.png}
+    \begin{subfigure}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/pc_noise.png}
         \caption{Nuvem de pontos com ruído.}
     \end{subfigure}
-    \hspace{3em}
-    \begin{subfigure}[t]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{dados/figuras/denoised.png}
-        \caption{Nuvem de pontos após remoção do ruído.}
+    \begin{subfigure}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/pc_denoise.png}
+        \caption{Nuvem de pontos após o processo de remoção de ruído.}
     \end{subfigure}
-    \fonte{Adaptado de \cite{arvanitis2017real}}
 \end{figure}
 
 Para realizar essa etapa, os filtros foram separados em dois grupos.
@@ -117,19 +227,19 @@ O segundo conjunto é formado por filtros mais complexos onde muitos já estão 
 Os filtros simples são representados pelo filtro por ângulo, filtro por intensidade e filtro por distância mínima, enquanto que os filtros complexos, são retratados pelo Filtro de Grade de \textit{Voxels}\footnote{Um \textit{voxel} é um \textit{pixel} que contém volume em um espaço tridimensional. Fazendo uma analogia, o \textit{voxel} seria um \textit{pixel} em 3D.}, Filtro de Suavização e o Filtro Estatístico de Remoção de \textit{Outliers}.
 
 
-\subsection{Filtro por Ângulo}
+\subsection{Filtro por ângulo}
 \label{sec:angle_filter}
 
 O filtro por ângulo, remove qualquer ponto que está fora da área cônica definida pelo ângulo horizontal $\theta$. Para esclarecer, na nuvem de pontos da Figura \ref{fig:angle_filter} são mostrados em cinza e em preto, os pontos descartados e mantidos pelo filtro, respectivamente.
 O ângulo de abertura no sensor geralmente é configurável no próprio hardware, porém o critério do descarte fica por conta da aplicação, pois em um \textit{dataset}, os mesmos pontos que são inúteis em um trabalho podem ser úteis em outro. 
 Por padrão, foi utilizado 120 graus para o ângulo $\theta$.
 
-\subsection{Filtro por Distância Mínima}
+\subsection{Filtro por distância mínima}
 \label{sec:distance_filter}
 
-O filtro por distância mínima faz a remoção de pontos que estão próximos ao sensor, onde a presença de ruído costuma ser elevada. Da mesma forma como abordado no filtro anterior, os pontos em cinzas são descartados enquanto que os pretos são mantidos, como mostra a Figura \ref{fig:distance_filter}. Por padrão, o valor adotado para o raio de exclusão é de 5 metros, ou seja, serão descartados todos os pontos que estiverem até 5 metros de distância do sensor.
+O filtro por distância mínima faz a remoção de pontos que estão próximos ao sensor, onde a presença de ruído costuma ser elevada. Da mesma forma como abordado no filtro anterior, os pontos em cinzas são descartados enquanto que os pretos são mantidos, como mostra a Figura \ref{fig:distance_filter}. Por padrão, o valor adotado para o raio de exclusão é de 5\textit{uc}, ou seja, serão descartados todos os pontos que estiverem até 5\textit{uc} de distância do sensor.
 
-\subsection{Filtro por Intensidade}
+\subsection{Filtro por intensidade}
 \label{sec:intensity_filter}
 
 Este processo remove os pontos que possuem baixo valor de intensidade. Os motivos para o sinal de intensidade ser baixo em um determinado ponto, pode ser:
@@ -165,7 +275,7 @@ Quanto mais claro for o ponto, maior será o seu valor de intensidade do sinal d
 Portanto, o filtro descarta os pontos mais escuros na imagem.
 Por padrão, é descartado todos os pontos que possuírem o valor de intensidade igual ou menor que 5\% da diferença entre o valor máximo e o valor mínimo de intensidade da nuvem de pontos.
 
-\subsection{Filtro de Grade de \textit{Voxels}}
+\subsection{Filtro de grade de \textit{voxels}}
 \label{sec:voxelgrid_filter}
 
 O Filtro de Grade de \textit{Voxels} (do inglês \textit{Voxel Grid Filter}) tem a finalidade de diminuir a resolução/densidade e ordenar os pontos em uma nuvem. 
@@ -181,7 +291,7 @@ A Figura \ref{fig:voxelgrid_filter} exibe uma nuvem de pontos de entrada (esquer
 
 Para diminuir a quantidade de pontos e ordená-los, o algoritmo cria uma grade no conjunto de dados, onde os pontos são deslocados para o centroide da célula (\textit{voxel}) da grade em que estão contidos (o tamanho do \textit{voxel} é definido pelo usuário). A diminuição da quantidade e ordenação dos pontos facilita o processo de triangularização (etapa posterior responsável por transformar a nuvem de pontos em uma superfície).
 
-\subsection{Filtro Estatístico de Remoção de \textit{Outliers}}
+\subsection{Filtro estatístico de remoção de \textit{outliers}}
 \label{sec:statistical_outlier_removal}
 
 O SORF (Filtro Estatístico de Remoção de \textit{Outliers}, do inglês \textit{Statistical Outlier Removal Filter}) é um filtro da biblioteca PCL que é responsável por remover conjuntos de pontos que possuem uma densidade menor do que o restante dos conjuntos de pontos dentro da nuvem. 
@@ -197,7 +307,7 @@ A Figura \ref{fig:outlier_filter} exemplifica a aplicação do filtro. Na imagem
 
 O filtro percorre a nuvem calculando, para cada ponto, a distância média entre seus pontos vizinhos (o número de vizinhos é definido pelo usuário). Assumindo o resultado como uma distribuição Gaussiana com uma média e um desvio padrão, todos os pontos cuja distância média estão fora de um intervalo definido pela média das distâncias globais e desvio padrão podem ser considerados \textit{outliers} e, portanto, removidos do conjunto de dados.
 
-\subsection{Filtro de Suavização}
+\subsection{Filtro de suavização}
 \label{sec:smoothing_filter}
 
 O Filtro de Suavização é um filtro que está presenta na biblioteca PCL e é responsável por suavizar e reconstruir a superfície de pontos na nuvem. 
@@ -229,10 +339,10 @@ Como exemplo, a Figura \ref{fig:reconstruction} mostra a reconstrução de um ob
 \end{figure}
 
 Para dar forma à superfície é necessário uma lógica para ligar os pontos, para tal lógica chamamos de triangulação.
-No trabalho, a triangulação é feita através da construção de triângulos sem fazer sobreposições, como ilustrado nos exemplos da Figura \ref{fig:triangulation}. 
-Apesar do nome triangulação remeter à triângulos, ela pode ser constituída por qualquer espaço em simplexos ou polígono. 
-Os simplexos são extensões de triângulos em outras dimensões, tais como segmentos de reta, tetraedros, e etc. 
-Existem diversas formas para fazer a triangulação em um conjunto de pontos, entre elas estão a triangulação incremental e a triangulação do fecho convexo.
+No trabalho, a triangulação é feita através da construção de triângulos sem fazer sobreposições. 
+Apesar do nome triangulação remeter à triângulos, ela pode ser constituída por qualquer espaço em simplexos ou em polígonos. 
+Os simplexos são extensões de triângulos em outras dimensões, tais como segmentos de reta, tetraedros, triângulos e etc. 
+A Figura \ref{fig:triangulation} mostra algumas formas para fazer a triangulação em um conjunto de pontos, como a triangulação incremental e a triangulação do fecho convexo.
 
 \begin{figure}[H]
     \centering
@@ -264,12 +374,12 @@ Fecho convexo (também conhecido como invólucro convexo ou envoltório convexo)
     \label{fig:convex_hull}
 \end{figure}
 
-Uma triangulação nem sempre é adequada para um certo problema, pois os triângulos precisam ser parecidos com o triângulo equilátero (triângulos que não possuem ângulos internos agudos). Essas triangulações especiais usam critérios para definir triângulos, entre os modelos conhecidos existe a Triangulação de Delaunay.
+Uma triangulação nem sempre é adequada para um certo problema, pois os triângulos precisam ser semelhantes com o triângulo equilátero (triângulos que não possuem ângulos internos agudos). Essas triangulações especiais usam critérios para definir triângulos, entre os modelos conhecidos existe a Triangulação de Delaunay.
 
 
 \subsection{Triangulação de Delaunay}
 \label{sec:delaunay}
-A triangulação de Delaunay, proposto por \cite{delaunay1934sphere}, é o método responsável por fornecer uma triangulação com o maior ângulo mínimo, ou seja, os melhores triângulos de forma única, em um determinado conjunto de pontos. O método pode ser formulado e estudado no espaço euclidiano de dimensão $n$, mas para fins explicativos será definida e exemplificada apenas no plano.
+A triangulação de Delaunay, proposto por \cite{delaunay1934sphere}, é o método responsável por fornecer uma triangulação com o maior ângulo mínimo, ou seja, os melhores triângulos de forma única, em um determinado conjunto de pontos. O método pode ser formulado e estudado no espaço euclidiano de dimensão $n$, mas para fins didáticos será definida e exemplificada apenas no plano.
 
 \begin{figure}[H]
     \centering
@@ -289,12 +399,15 @@ A triangulação de Delaunay, proposto por \cite{delaunay1934sphere}, é o méto
     \label{fig:delaunay}
 \end{figure}
 
-Para a criação dos triângulos, se pode utilizar qualquer metodologia de triangulação (inclusive as que foram apresentadas na Figura \ref{fig:triangulation}). Após a criação, há uma verficação, que deve ser realizada em cada triângulo, definida pela regra do circuncírculo, que determina se o triângulo é ou não de Delaunay. 
+Para a criação dos triângulos, se pode utilizar qualquer metodologia de triangulação (inclusive as que foram apresentadas na Figura \ref{fig:triangulation}). Após a criação, há uma verificação, que deve ser realizada em cada triângulo da malha, definida pela regra do circuncirculo, que determina se o triângulo é ou não de Delaunay. 
 A regra descreve que para cada triângulo da malha, é traçado um círculo que passa pelos três vértices do triângulo, se esse círculo conter apenas os 3 pontos do triângulo, então ele satisfaz a regra. 
-Se haver mais de 3 pontos dentro, então é aplicada a troca (\textit{flip}) entre arestas contidas no círculo. 
-Para explicar o termo \textit{flip}, observe a Figura \ref{fig:delaunay1}, onde o triângulo ABC não satisfaz a regra do circuncírculo, pois há outro vértice contído (D). 
+Se haver mais de 3 pontos dentro, então é aplicada a troca (\textit{flip}) entre arestas contidas no círculo.
+
+Para explicar o termo \textit{flip}, observe a Figura \ref{fig:delaunay1}, onde o triângulo ABC não satisfaz a regra do circuncirculo, pois há outro vértice contido (D).
 Para resolver esse problema se utiliza o \textit{flip} entre os triângulos ABC e ACD, que faz a troca da aresta AC pela aresta DB. 
-Refazendo a regra do circuncírculo nos triângulos, é possível observar (Figura \ref{fig:delaunay2}) que ambos são triângulos de Delaunay.
+Refazendo a regra do circuncirculo nos triângulos, é possível observar (Figura \ref{fig:delaunay2}) que ambos agora são triângulos de Delaunay.
+
+Na Figura \ref{fig:delaunay_theorem} há outro exemplo de \textit{flip}. A Figura \ref{fig:delaunay_theorem2} mostra ambos triângulos que não obedecem a regra do circuncírculo. Realizando o \textit{flip} entre as arestas BD e AC, a regra se torna válida (Figura \ref{fig:delaunay_theorem3}). 
 
 \begin{figure}[H]
     \centering
@@ -319,8 +432,9 @@ Refazendo a regra do circuncírculo nos triângulos, é possível observar (Figu
     \label{fig:delaunay_theorem}
 \end{figure}
 
-Na Figura \ref{fig:delaunay_theorem} há outro exemplo de \textit{flip}. A Figura \ref{fig:delaunay_theorem2} mostra ambos triângulos que não obedecem a regra do circuncírculo. Realizando o \textit{flip} entre as arestas BD e AC, a regra se torna válida (Figura \ref{fig:delaunay_theorem3}). 
-%Explicar como funciona a triangulação de Delaunay
+\subsection{Separação da superfície}
+
+
 
 \section{Comparação}
 \label{sec:comparacao}
@@ -328,9 +442,9 @@ Na Figura \ref{fig:delaunay_theorem} há outro exemplo de \textit{flip}. A Figur
 A comparação é a última etapa do processo de desenvolvimento. 
 Essa parte é possível fazer a comparação entre dois modelos e determinar o quanto se perdeu ou ganhou em relação ao volume e superfície. 
 A principal aplicação é modelar coletas do mesmo local em diferentes períodos e fazer a comparação entre os resultados alcançados. 
-Os resultados são obtidos a partir da diferença entre dois modelos reconstruídos, portanto, só há sentido calcular o volume e superfície de cada modelo nessa etapa de comparação.
+Os resultados são obtidos a partir da diferença entre dois modelos reconstruídos, portanto, só há sentido calcular o volume e superfície de cada modelo nessa etapa.
 
-\subsection{Cálculo de Superfície}
+\subsection{Cálculo de superfície}
 \label{sec:surface_calc}
 
 O cálculo da área de superfície é importante para estimar a qualidade da reconstrução.
@@ -350,7 +464,7 @@ A fórmula de Heron é mostrada pela Equação \ref{eq:heron}, onde $a$, $b$ e $
 \end{equation}
 
 
-\subsection{Cálculo de Volume}
+\subsection{Cálculo de volume}
 \label{sec:volume_calc}
 
 O processo de cálculo de volume é fundamental para realizar a comparação entre reconstruções.
