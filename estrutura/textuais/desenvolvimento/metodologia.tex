@@ -138,15 +138,19 @@ Após o deslocamento, o processo de leitura se repete até o veículo encostar n
 \label{sec:in_loco}
 
 A aquisição de dados em campo foi realizada em uma piscina, como mostra a Figura \ref{fig:piscina}.
-A piscina possui o formato de um retângulo no qual há dois lados maiores e dois lados menores, onde um dos lados menores há uma escadaria.
-Nos experimentos, foram utilizados apenas os lados menores. 
+A piscina possui o formato de um retângulo no qual há dois lados maiores e dois lados menores, onde foi utilizado apenas um dos lados menores.
 
 O ROV foi posicionado inicialmente à uma determinada distância da parede e próximo a superfície.
 O sensor faz a leitura da parede, percorrendo 180º e na sequência se desloca alguns centímetros verticalmente em direção ao fundo.
 Esse procedimento se repete até o robô encostar no fundo da piscina.
-No primeiro experimento, o ROV foi posicionado a 1,5 metros de distância da parede da piscina.
-Após concluir a varredura, o procedimento é repetido, porém à uma distância de 3 metros.
+No primeiro experimento, o ROV foi posicionado a 1,5 metros de distância da parede da piscina, esse será o cenário D.
+Após concluir a varredura, o procedimento é repetido, porém à uma distância de 3 metros, esse será o cenário E.
+Ambos cenários vão compor o único contexto do experimento em campo.
+
+\iffalse
 O segundo experimento foi semelhante ao primeiro, porém foi realizado no outro lado, no qual possui uma escadaria, e as distâncias eram de 2,5 e 4 metros.
+O cálculo de volume só haverá no primeiro experimento, pois no segundo, não há como saber o real valor do volume da escadaria.
+\fi
 
 \begin{figure}[H]
     \centering
@@ -161,8 +165,8 @@ O segundo experimento foi semelhante ao primeiro, porém foi realizado no outro 
     \end{subfigure}
 \end{figure}
 
-Para fazer a coleta, foi utlizado o ROV, modelo LBV300-5\footnote{Informações completas do modelo do ROV em: \url{http://www.teledynemarine.com/lbv300-5}} (Figura \ref{fig:rov_nautec}), do grupo do NAUTEC do C3. 
-Acoplado ao robô, será utilizado o sensor MSIS modelo Tritech Micron Sonar\footnote{Informações completas do modelo do sensor em: \url{http://www.tritech.co.uk/media/products/small-rov-mechanical-sector-scanning-sonar-tritech-micron.pdf?id=e3070c7b}} que é responsável pela captura dos dados.
+Para fazer a coleta, foi utlizado o ROV, modelo LBV300-5\footnote{Informações completas do modelo do ROV no Anexo \ref{chap:especificacao_rov}.} (Figura \ref{fig:rov_nautec}), do grupo do NAUTEC do C3. 
+Acoplado ao robô, será utilizado o sensor MSIS modelo Tritech Micron Sonar\footnote{Informações completas do modelo do sensor no Anexo \ref{chap:especificacao_sonar}.} que é responsável pela captura dos dados.
 
 \begin{figure}[H]
     \centering
@@ -217,7 +221,7 @@ O resultado da etapa de filtragem é uma nuvem de pontos mais limpa e legível, 
     \end{subfigure}
     \begin{subfigure}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/pc_denoise.png}
-        \caption{Nuvem de pontos após o processo de remoção de ruído.}
+        \caption{Nuvem de pontos após a remoção de ruído.}
     \end{subfigure}
 \end{figure}
 
@@ -237,7 +241,15 @@ Por padrão, foi utilizado 120 graus para o ângulo $\theta$.
 \subsection{Filtro por distância mínima}
 \label{sec:distance_filter}
 
-O filtro por distância mínima faz a remoção de pontos que estão próximos ao sensor, onde a presença de ruído costuma ser elevada. Da mesma forma como abordado no filtro anterior, os pontos em cinzas são descartados enquanto que os pretos são mantidos, como mostra a Figura \ref{fig:distance_filter}. Por padrão, o valor adotado para o raio de exclusão é de 5\textit{uc}, ou seja, serão descartados todos os pontos que estiverem até 5\textit{uc} de distância do sensor.
+O filtro por distância mínima faz a remoção de pontos que estão próximos ao sensor, onde a presença de ruído costuma ser elevada. 
+Da mesma forma como abordado no filtro anterior, os pontos em cinzas são descartados enquanto que os pretos são mantidos, como mostra a Figura \ref{fig:distance_filter}. 
+Por padrão, o valor adotado para o raio de exclusão é de 5\textit{uc}, ou seja, serão descartados todos os pontos que estiverem até 5\textit{uc} de distância do sensor.
+
+\subsection{Filtro por distância máxima}
+\label{sec:distance_filter2}
+
+O filtro por distância máxima funciona da mesma forma que o filtro por distância mínima, porém se faz a remoção de pontos que estão distantes do sensor (Figura \ref{fig:distance_filter2}).
+Ele é utilizado apenas nos dados coletados no experimento \textit{in loco}, onde a presença de ruído é alta em pontos distantes.
 
 \subsection{Filtro por intensidade}
 \label{sec:intensity_filter}
@@ -259,14 +271,20 @@ Este processo remove os pontos que possuem baixo valor de intensidade. Os motivo
     \end{subfigure}
     \hspace{3em}
     \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/intensity_filter.png}
+        \caption{Filtro por intensidade.}
+        \label{fig:intensity_filter}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/distance_filter.png}
         \caption{Filtro por distância mínima.}
         \label{fig:distance_filter}
     \end{subfigure}
+    \hspace{3em}
     \begin{subfigure}[t]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{dados/figuras/intensity_filter.png}
-        \caption{Filtro por intensidade.}
-        \label{fig:intensity_filter}
+        \includegraphics[width=\textwidth]{dados/figuras/distance_filter2.png}
+        \caption{Filtro por distância máxima.}
+        \label{fig:distance_filter2}
     \end{subfigure}
 \end{figure}
 
@@ -342,6 +360,7 @@ Para dar forma à superfície é necessário uma lógica para ligar os pontos, p
 No trabalho, a triangulação é feita através da construção de triângulos sem fazer sobreposições. 
 Apesar do nome triangulação remeter à triângulos, ela pode ser constituída por qualquer espaço em simplexos ou em polígonos. 
 Os simplexos são extensões de triângulos em outras dimensões, tais como segmentos de reta, tetraedros, triângulos e etc. 
+Os elementos que constituem uma triangulação, são denominados de face.
 A Figura \ref{fig:triangulation} mostra algumas formas para fazer a triangulação em um conjunto de pontos, como a triangulação incremental e a triangulação do fecho convexo.
 
 \begin{figure}[H]
@@ -432,8 +451,52 @@ Na Figura \ref{fig:delaunay_theorem} há outro exemplo de \textit{flip}. A Figur
     \label{fig:delaunay_theorem}
 \end{figure}
 
-\subsection{Separação da superfície}
+Para realizar uma triangulação de um conjunto de pontos que estão dispersos pelo espaço é necessário projetá-los em um mesmo plano, pois só assim é possível reconstruir uma superfície aberta\footnote{Entende-se como superfície aberta qualquer forma ou geometria no espaço, no qual não possui volume, possui um ponto inicial e final e ambos pontos não se conectam. Uma superfície fechada possui um volume, que é o caso da esfera, do cubo, do torom etc.}.
+Após a criação das faces, os pontos retornam para o espaço 3D.
+Contudo, algumas faces podem conter pontos que estejam próximos no momento da triangulação no plano, mas distantes no espaço 3D, ocasionando em triângulos com uma grande área e que podem estar sobrepondo outros triângulos. 
+Esse problema será tratado na próxima seção (Seção \ref{sec:split_mesh}).
+Na Figura \ref{fig:prism} é possível observar uma projeção de pontos e faces em um plano.
 
+
+\subsection{Separação da superfície}
+\label{sec:split_mesh}
+
+A separação da superfície é um processo que faz a divisão da malha e remove as sub-malhas desnecessárias, além de corrigir erros de reconstrução.
+Essa etapa ocorre dentro da etapa de reconstrução e faz a utilização da biblioteca Pymesh (descrita na Seção \ref{sec:pymesh}).
+
+Como visto na seção anterior, a etapa de triangulação de uma nuvem de pontos no plano pode criar triângulos sobrepostos e com uma grande área (Figura \ref{fig:split_mesh2}).
+Para resolver esse problema, é necessário definir um valor para a  área máxima do triângulo, ou seja, se a área do triângulo criado for maior que o valor definido de área máxima, então essa face é descartada da malha.
+O valor definido para a área máxima pode depender do tamanho e da densidade da nuvem de pontos.
+Essa abordagem resolve o problema, porém com o descarte de faces, acaba surgindo lacunas e descontinuidades na malha, gerando sub-malhas (Figura \ref{fig:split_mesh3}).
+
+\begin{figure}[H]
+    \centering
+    \caption{Processo de remoção das sub-malhas.}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/split_mesh1.png}
+        \caption{Nuvem de pontos antes da reconstrução.}
+        \label{fig:split_mesh1}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/split_mesh2.png}
+        \caption{Superfície sem aplicar a separação.}
+        \label{fig:split_mesh2}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/split_mesh3.png}
+        \caption{Superfície após a remoção dos grandes triângulos.}
+        \label{fig:split_mesh3}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/split_mesh4.png}
+        \caption{Superfície após a remoção das sub-malhas.}
+        \label{fig:split_mesh4}
+    \end{subfigure}
+    \label{fig:split_mesh}
+\end{figure}
+
+Para escolher a sub-malha que represente melhor a superfície escaneada pelo sensor, se faz o cálculo de área de cada sub-malha.
+Aquela que apresentar maior área será escolhida e o restante será descartado (Figura \ref{fig:split_mesh4}).
 
 
 \section{Comparação}
@@ -441,8 +504,10 @@ Na Figura \ref{fig:delaunay_theorem} há outro exemplo de \textit{flip}. A Figur
 
 A comparação é a última etapa do processo de desenvolvimento. 
 Essa parte é possível fazer a comparação entre dois modelos e determinar o quanto se perdeu ou ganhou em relação ao volume e superfície. 
-A principal aplicação é modelar coletas do mesmo local em diferentes períodos e fazer a comparação entre os resultados alcançados. 
-Os resultados são obtidos a partir da diferença entre dois modelos reconstruídos, portanto, só há sentido calcular o volume e superfície de cada modelo nessa etapa.
+A principal aplicação é modelar coletas do mesmo local em diferentes períodos e fazer a comparação entre os resultados alcançados.
+
+Os resultados são obtidos a partir da diferença entre dois modelos reconstruídos, por esse motivo a etapa de comparação é um processo separado do restante. 
+O cálculo de superfície ocorre nas etapas de reconstrução e comparação, enquanto que o cálculo de volume só ocorre na etapa de comparação, por esse motivo ambos serão descritos nessa seção.
 
 \subsection{Cálculo de superfície}
 \label{sec:surface_calc}
@@ -450,7 +515,6 @@ Os resultados são obtidos a partir da diferença entre dois modelos reconstruí
 O cálculo da área de superfície é importante para estimar a qualidade da reconstrução.
 A superfície é uma malha de triângulos, portanto para calcular a área total, basta somar a área de cada triângulo contido nela. 
 Para esse tipo de cálculo foi utilizada a fórmula de Heron (ou de Herão), que é capaz de calcular a área de qualquer tipo de triângulo em função das medidas dos seus três lados.
-
 A fórmula de Heron é mostrada pela Equação \ref{eq:heron}, onde $a$, $b$ e $c$ são os três lados e $p$ representa o semiperímetro do triângulo (Equação \ref{eq:heron_p}).
 
 \begin{equation}
@@ -477,6 +541,30 @@ O resultado da projeção é um conjunto de poliedros irregulares, onde cada pol
     \includegraphics[scale=0.5]{dados/figuras/prisms.png}
     \fonte{\cite{berg2008computational}}
     \label{fig:prism}
+\end{figure}
+
+O plano base em uma comparação é definido pelo ponto mais distante do sensor entre os dois modelos.
+Com o ponto selecionado, o plano base é traçado e ambos modelos constroem seus volumes com base nesse plano, como mostra a Figura \ref{fig:projection}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Reconstrução do volume de dois modelos em comparação.}
+    \begin{subfigure}[t]{0.325\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/projection1.png}
+        \caption{Volume que possui o ponto mais distante do sensor.}
+        \label{fig:projection1}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.325\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/projection2.png}
+        \caption{Comparação entre modelos.}
+        \label{fig:projection2}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.325\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/projection3.png}
+        \caption{Geração do volume do segundo modelo.}
+        \label{fig:projection3}
+    \end{subfigure}
+    \label{fig:projection}
 \end{figure}
 
 O poliedro irregular é semelhante ao prisma regular, porém suas bases são diferentes (Figura \ref{fig:polyhedron}). Por esse motivo, não se pode utilizar a fórmula convencional de cálculo de volume de prismas regulares.  
@@ -529,9 +617,9 @@ Os pontos $b$ e $e$ são projeções dos pontos $a$, $c$ e $d$, ilustrado na Fig
 
 A separação torna o cálculo do volume mais simples, como mostra a Equação \ref{eq:volume_polyhedron}. 
 O volume total ($V_t$) é composto pela soma do volume da pirâmide ($V_{pi}$) com o volume do prisma ($V_{pr}$).
-Na Equação \ref{eq:volume_pyramid}, o volume da pirâmide é $1/3$ do produto da base ($b_{pi}$) pela altura ($h_{pi}$). 
-Por fim, o volume do prisma é o produto da base ($b_{pr}$) pela altura  ($h_{pr}$), como mostra a Equação \ref{eq:volume_prism}.
-A área da base da pirâmide é um trapézio retângulo e é descrita pela Fórmula \ref{eq:trap_rect}, onde $B$ é a base maior ($\left | \overrightarrow{cb} \right |$)), $b$ é a base menor ($\left | \overrightarrow{de} \right |$)) e $h$ é a altura ($\left | \overrightarrow{be} \right |$)
+Na Equação \ref{eq:volume_pyramid}, o volume do prisma é $1/3$ do produto da base ($b_{pi}$) pela altura ($h_{pi}$). 
+Por fim, o volume da pirâmide é o produto da base ($b_{pr}$) pela altura  ($h_{pr}$), como mostra a Equação \ref{eq:volume_prism}.
+A área da base da pirâmide é um trapézio retângulo e é descrita pela Fórmula \ref{eq:trap_rect}, onde $B$ é a base maior ($\left | \overrightarrow{cb} \right |$)), $b$ é a base menor ($\left | \overrightarrow{de} \right |$)) e $h$ é a distância entre as bases ($\left | \overrightarrow{be} \right |$)
 
 
 \begin{multicols}{3}
@@ -540,12 +628,12 @@ A área da base da pirâmide é um trapézio retângulo e é descrita pela Fórm
         V_t = V_{pr} + V_{pi}
     \end{equation}
     \begin{equation}
-        \label{eq:volume_prism}
-        V_{pi} = \frac{1}{3} \cdot b_{pi} \cdot h_{pi}
-    \end{equation}
-    \begin{equation}
         \label{eq:volume_pyramid}
         V_{pr} = b_{pr} \cdot h_{pr}
+    \end{equation}
+    \begin{equation}
+        \label{eq:volume_prism}
+        V_{pi} = \frac{1}{3} \cdot b_{pi} \cdot h_{pi}
     \end{equation}
 \end{multicols}
 
@@ -553,6 +641,7 @@ A área da base da pirâmide é um trapézio retângulo e é descrita pela Fórm
     \label{eq:trap_rect}
     b_{pi} = (B+b) \cdot h \cdot \frac{1}{2}
 \end{equation}
+\vspace{0.5em}
 
 \iffalse
 O Algoritmo \ref{alg:poly_alg} descreve o procedimento para o cálculo de volume de um poliedro irregular. 
