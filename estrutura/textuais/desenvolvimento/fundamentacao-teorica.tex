@@ -6,9 +6,6 @@
 \section{Sensor sonar}
 \label{sec:sonar}
 
-\subsection{Princípio do sonar}
-\label{sec:principio-sonar}
-
 O sonar é um sensor capaz de calcular a distância de objetos em um meio através de ondas sonoras. 
 O sensor emite um pulso de onda que percorre o meio até colidir em um obstáculo/objeto ou ser absorvido completamente pelo meio. 
 Após colidir, parte da onda é refletida e retorna para o sensor (a origem do pulso) com uma intensidade menor. 
@@ -16,8 +13,8 @@ Ao ser captada pelo sensor, a onda é decomposta em diversos fragmentos, onde ca
 
 \begin{figure}[H]
     \centering
-    \caption{Representação do \textit{bin} e do \textit{beam} em uma imagem acústica}
     \includegraphics[scale=0.4]{dados/figuras/imagem_acustica.jpg}
+    \caption{Representação do \textit{bin} e do \textit{beam} em uma imagem acústica}
     \label{fig:imagem_acustica}
 \end{figure}
 
@@ -27,7 +24,7 @@ Sinais de alta frequência possuem um curto alcance, porém produz um sinal de r
 
 \begin{table}[H]
     \centering
-    \caption{Relação entre alcance e frequência da onda acústica}
+    \caption{Relação entre alcance e frequência da onda acústica na água salgada.}
     \label{tab:freq-acustica}
     \begin{tabular}{@{}lll@{}}
     \toprule
@@ -41,7 +38,7 @@ Sinais de alta frequência possuem um curto alcance, porém produz um sinal de r
         500 kHz & 3 mm & 150 m \\
         1 MHz & 1.5 mm & 50 m \\ \bottomrule
     \end{tabular}
-    \fonte{\cite{christ2013rov}}
+    \fonte{\cite{christ2014rov}}
 \end{table}
 
 Sabendo a velocidade de propagação do som no meio e o intervalo de tempo que a onda levou para retornar, é possível calcular a distância do obstáculo até o sensor. 
@@ -83,29 +80,26 @@ Na Tabela \ref{tab:vel_som}, \cite{halliday2008fundamentals} comprovou esse fato
 \subsection{Imagem acústica}
 \label{sec:imagem_acustica}
 
-As imagens acústicas são diferentes das imagens convencionais produzidas por sensores ópticos, por esse motivo a interpretação se torna mais dificultosa.
-Para poder interpretá-las é preciso entender o processo de geração de um \textit{beam}. 
+As imagens acústicas são diferentes das imagens convencionais produzidas por sensores ópticos e para poder interpretá-las é preciso entender o processo de geração de um \textit{beam}. 
+Como ilustra a Figura \ref{fig:acoustic_beam}, o pulso acústico colide com obstáculos e retorna para o sensor onde é convertida para um valor de sinal de intensidade. 
+O primeiro sinal de intensidade medido é resultante da colisão com o solo por conta do ângulo de abertura vertical do \textit{beam} acústico.
+O segundo sinal é mais forte por conta do ângulo de colisão do pulso com o obstáculo ser menor.
 
 \begin{figure}[H]
     \centering
-    \caption{Geração de um \textit{beam} acústico.}
     \includegraphics[scale=0.4]{dados/figuras/acoustic_beam.png}
+    \caption{Geração de um \textit{beam} acústico.}
+    \vspace{-0.8em}
     \fonte{\cite{ribas2010underwater}}
     \label{fig:acoustic_beam}
 \end{figure}
 
-Como ilustra a Figura \ref{fig:acoustic_beam}, o pulso acústico colide com obstáculos e retorna um valor de sinal de intensidade. 
-O primeiro sinal de intensidade retornado é resultante da colisão com o solo por conta do ângulo de abertura vertical do \textit{beam} acústico.
-O segundo sinal é mais forte por conta do ângulo de colisão do pulso com o obstáculo ser menor.
-
 As imagens acústicas podem apresentar alguns problemas, como a ambiguidade e a reverberação, exibidos pela Figura \ref{fig:acoustic_image}. 
 A ambiguidade é uma indeterminação que ocorre quando dois objetos estão próximos ou na mesma posição vertical e, consequentemente, acabam ocupando o mesmo espaço no \textit{bin} da imagem acústica, resultando em um sinal de intensidade único para os dois objetos.
-A reverberação é um efeito gerado quando o pulso acústico é refletido de forma contínua, ocasionando a replicação atenuada no retorno do sinal.
+A reverberação é um efeito gerado quando o pulso acústico é refletido de forma contínua, ocasionando a replicação atenuada no retorno do sinal medido.
 
 \begin{figure}[H]
     \centering
-    \caption{Problemas que podem ser gerados em imagens acústicas.}
-    \label{fig:acoustic_image}
     \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/ambiguity.png}
         \caption{Ambiguidade.}
@@ -116,7 +110,10 @@ A reverberação é um efeito gerado quando o pulso acústico é refletido de fo
         \caption{Reverberação.}
         \label{fig:beam_reflected}
     \end{subfigure}
+    \caption{Problemas que podem ser gerados em imagens acústicas.}
+    \vspace{-0.8em}
     \fonte{\cite{ribas2010underwater}}
+    \label{fig:acoustic_image}
 \end{figure}
 
 
@@ -127,8 +124,6 @@ O sonar \textit{singlebeam} trabalha com apenas um único pulso de onda (Figura 
 
 \begin{figure}[H]
     \centering
-    \caption{Diferentes modelos de sonares.}
-    \label{fig:beams}
     \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/singlebeam.png}
         \caption{\textit{Echo sounder.}}
@@ -154,7 +149,10 @@ O sonar \textit{singlebeam} trabalha com apenas um único pulso de onda (Figura 
         \caption{\textit{Foward looking imaging sonar.}}
         \label{fig:fls}
     \end{subfigure}
+    \caption{Diferentes modelos de sonares.}
+    \vspace{-0.8em}
     \fonte{Adaptado de \cite{ribas2010underwater}.}
+    \label{fig:beams}
 \end{figure}
 
 Por outro lado, o sonar \textit{multibeam} é mais complexo, composto por um conjunto de hidrofones\footnote{Os hidrofones são transdutores de som para eletricidade que captam vibrações sonoras transmitidas no meio, reconhecendo na forma de frequência. Após reconhecer a frequência, o dispositivo transforma em um sinal elétrico.} que emitem vários pulsos de onda de forma simultânea, que juntos possuem o formato de um leque (Figuras \ref{fig:multi-prof-sonar} e \ref{fig:fls}). Esse tipo de sonar é comumente utilizado para fazer batimetria e imageamento de ambientes e superfícies submersas por possuir uma alta qualidade e velocidade de coleta de dados.
@@ -166,24 +164,25 @@ Para exemplificar, na Figura \ref{fig:msis-image}, apresenta uma imagem de saté
 
 \begin{figure}[H]
     \centering
-    \caption{Imagem acústica sobreposta em uma imagem de satélite.}
     \includegraphics[scale=0.3]{dados/figuras/msis_image.png}
+    \caption{Imagem acústica sobreposta em uma imagem de satélite.}
+    \vspace{-0.8em}
     \fonte{\cite{ribas2006slam}}
     \label{fig:msis-image}
 \end{figure}
 
 O sensor efetua a leitura de um \textit{beam} para cada incremento de ângulo ($\psi$). 
 O \textit{beam} possui uma largura horizontal ($\theta$) e uma largura vertical ($\phi$), onde ambas variam em função do tamanho máximo de alcance ($r$) do sinal acústico (Figura \ref{fig:beam}).
+A desvantagem do MSIS é que o processo de escaneamento pode ser vagaroso por conta do transdutor rotar os 360 graus\footnote{Geralmente, o equipamento possibilita a configuração para um range angular menor do que 360º, tornando menor o tempo de leitura de uma imagem completa. Outro fator que interfere no tempo de leitura é a resolução da imagem acústica, que influencia no alcance do sensor, consequentemente, no número de \textit{bins} por \textit{beam}.}.
 
 \begin{figure}[H]
     \centering
-    \caption{Vista em perspectiva de um \textit{beam}.}
     \includegraphics[scale=0.3]{dados/figuras/beam.png}
+    \caption{Vista em perspectiva de um \textit{beam}.}
+    \vspace{-0.8em}
     \fonte{\cite{mallios2016toward}}
     \label{fig:beam}
 \end{figure}
-
-O processo de escaneamento pode ser vagaroso por conta do transdutor rotar os 360 graus\footnote{Geralmente o equipamento possibilita a configuração para um range angular menor do que 360º, tornando menor o tempo de leitura de uma imagem completa.}, porém seu baixo custo e peso torna o modelo viável para aplicações com alto risco de perda do equipamento.
 
 
 \section{\textit{Robot Operating System}}
@@ -218,8 +217,8 @@ No ROS, os grafos de computação possui a finalidade de representar sua rede de
 
 \begin{figure}[H]
     \centering
+    \includegraphics[scale=0.6]{dados/figuras/topic_node.png}
     \caption{Relação entre tópico e nodo.}
-    \includegraphics[scale=0.3]{dados/figuras/topic_node.png}
     \label{fig:topic_node}
 \end{figure}
 
@@ -232,20 +231,20 @@ O Gazebo é um robusto \textit{software} de código aberto para simulação de a
 
 \begin{figure}[H]
     \centering
-    \caption{Interface gráfica do simulador Gazebo}
-    \label{fig:gazebo}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.47\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/gazebo1.jpeg}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.47\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/gazebo2.jpeg}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.47\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/gazebo3.jpeg}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.47\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/gazebo4.jpeg}
     \end{subfigure}
+    \caption{Interface gráfica do simulador Gazebo}
+    \label{fig:gazebo}
 \end{figure}
 
 Contudo, o desenvolvimento em código aberto facilita a criação de pacotes com plugins que auxiliam na simulação, como os pacotes \textit{UUV Simulator} e o Simulador Netuno, desenvolvido por, respectivamente, \cite{manhaes2016uuv} e \cite{longaray2017}. Ambos trabalhos contribuíram para a expansão da área da robótica subaquática.
@@ -273,8 +272,6 @@ A intensidade é calculada de acordo com os canais azul e verde, que representam
 
 \begin{figure}[H]
     \centering
-    \caption{Imagens correspondentes geradas pelo \textit{GPU Sonar Simulator}}
-    \label{fig:shader_output}
     \begin{subfigure}[t]{0.7\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/shader_output1.png}
         \caption{Imagem gerada pelo \textit{shader}}
@@ -283,7 +280,10 @@ A intensidade é calculada de acordo com os canais azul e verde, que representam
         \includegraphics[width=\textwidth]{dados/figuras/shader_output2.png}
         \caption{Imagem acústica resultante.}
     \end{subfigure}
+    \caption{Imagens correspondentes geradas pelo \textit{GPU Sonar Simulator}}
+    \vspace{-0.8em}
     \fonte{Adaptado de \cite{longaray2017}.}
+    \label{fig:shader_output}
 \end{figure}
 
 O simulador do sonar possui alguns parâmetros de simulação que são definidos pelo usuário, tais como:
@@ -299,13 +299,14 @@ O simulador do sonar possui alguns parâmetros de simulação que são definidos
 
 \begin{figure}[H]
     \centering
-    \caption{Descrição gráfica do método utilizado no simulador do sonar}
-    \label{fig:gpu_sonar_sim}
     \includegraphics[scale=0.35]{dados/figuras/gpu_sonar.png}
+    \caption{Descrição gráfica do método utilizado no simulador do sonar.}
+    \vspace{-0.8em}
     \fonte{\cite{cerqueira2016gpu}.}
+    \label{fig:gpu_sonar_sim}
 \end{figure}
 
-Esses parâmetros afetam no processamento do simulador e resolução da imagem. Quanto maior o número de \textit{bins}, melhor será a qualidade da imagem acústica. A Figura \ref{fig:gpu_sonar_sim} ilustra o método utilizado no simulador e descrito nessa seção.
+Esses parâmetros afetam no processamento do simulador e resolução da imagem. Quanto maior o número de \textit{bins}, melhor será a qualidade da imagem acústica. A Figura \ref{fig:gpu_sonar_sim} ilustra graficamente às etapas realizadas no método, desde a extração de informações de uma cena no OSG até a atribuição de instensidades de cada \textit{bin} em um \textit{beam} de sonar.
 
 \section{Nuvem de pontos}
 \label{sec:point_cloud}
@@ -323,8 +324,8 @@ A Figura \ref{fig:bunny_example} ilustra a diferença entre uma nuvem de pontos 
 
 \begin{figure}[H]
     \centering
-    \caption{Diferença entre nuvem de pontos (esquerda) e uma malha de polígonos (direita).}
     \includegraphics[scale=0.3]{dados/figuras/bunny_example.png}
+    \caption{Diferença entre nuvem de pontos (esquerda) e uma malha de polígonos (direita).}
     \label{fig:bunny_example}
 \end{figure}
 
@@ -343,13 +344,14 @@ A PCL contém diversos algoritmos no estado da arte, incluindo filtros, estimaç
 
 \begin{figure}[H]
     \centering
-    \caption{Exemplo de utilização da PCL em dados adquiridos por um sensor a laser.}
-    \label{fig:pcl_example}
     \includegraphics[scale=0.3]{dados/figuras/pcl_example.png}
+    \caption{Exemplo de utilização da PCL em dados adquiridos por um sensor a laser.}
+    \vspace{-0.8em}
     \fonte{\cite{rusu2011pcl}.}
+    \label{fig:pcl_example}
 \end{figure}
 
-A Figura \ref{fig:pcl_example} ilustra um exemplo da aplicação da PCL em uma nuvem de pontos. Na imagem a esquerda mostra uma nuvem de pontos adquirida a partir de um sensor a laser, a imagem do meio mostra a nuvem resultante após passar por um filtro\footnote{O filtro utilizado se chama \textit{Statistical Outlier Removal} (filtro estatístico de remoção de \textit{outliers}) descrito na Seção \ref{sec:statistical_outlier_removal}. A documentação do filtro se encontra em: \url{http://pointclouds.org/documentation/tutorials/statistical_outlier.php}.}, por último, os pontos descartados são mostrados na figura na direita.
+A Figura \ref{fig:pcl_example} ilustra um exemplo da aplicação da PCL em uma nuvem de pontos. Na imagem a esquerda mostra uma nuvem de pontos adquirida a partir de um sensor a laser, a imagem do meio mostra a nuvem resultante após aplicar por um filtro\footnote{O filtro utilizado se chama \textit{Statistical Outlier Removal} (filtro estatístico de remoção de \textit{outliers}) descrito na Seção \ref{sec:statistical_outlier_removal}. A documentação do filtro se encontra em: \url{http://pointclouds.org/documentation/tutorials/statistical_outlier.php}.}, por último, os pontos descartados são mostrados na figura na direita.
 
 \section{Pymesh}
 \label{sec:pymesh}
@@ -362,7 +364,7 @@ Entre as funcionalidades da ferramenta, estão:
 \begin{itemize}
     \item Escrita e leitura em diversos tipos de formatos de arquivos que trabalham com processamento 3D (\textit{.obj}, \textit{.ply}, \textit{.stl}, \textit{.mesh}, etc...);
     \item Geração e manipulação de malhas de pontos através de vértices, faces e \textit{voxels};
-    \item Funções booleanas com malhas de pontos, tais como interse;
+    \item Funções booleanas com malhas de pontos, tais como união, diferença e interseção;
 \end{itemize}
 \vspace{1em}
 

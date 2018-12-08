@@ -4,25 +4,11 @@
 \label{chap:resultados}
 
 Este capítulo tem o propósito de demonstrar e fazer a análise dos resultados obtidos no trabalho.
-Serão analisados os seguintes resultados:
-
-\begin{itemize}
-    \vspace{0.5em}
-    \item Reconstrução dos cenários virtuais;
-    \item Reconstrução dos cenários reais;
-    \item Resultados dos contextos virtuais;
-    \item Resultados dos contextos reais;
-    \item Desempenho dos algoritmos de cálculo de volume e superfície.
-    \item Comparação entre reconstrução em simulação e no experimento;
-\end{itemize}
-\vspace{1em}
-
 Os resultados da reconstrução de ambas coletas serão avaliados de duas formas: a primeira será a avaliação individual de cada cenário, enquanto que a segunda será a avaliação dos contextos.
 Além de fazer a análise da simulação separada da análise em campo, serão comparados os resultados obtidos nos cenários e contextos virtuais com os reais.
-Outra análise que será realizada é em relação ao desempenho dos algoritmos de cálculo de volume e superfície, pois esses influenciam diretamente na taxa de acerto da reconstrução.
 
 
-\section{Simulação virtual}
+\section{Experimento em simulação virtual}
 
 \subsection{Avaliação da reconstrução dos cenários}
 \label{sec:avaliacao_cenarios_simulacao}
@@ -31,13 +17,13 @@ Os resultados da reconstrução dos cenários, apresentados na Seção \ref{sec:
 A Tabela \ref{tab:tabela_result_cenarios_sup} mostra o resultado da reconstrução da superfície através da diferença entre a área esperada e a área calculada pelo algoritmo.
 A avaliação do desempenho da reconstrução em 3D é ditada pela taxa de acerto destes dados.
 
-A superfície foi maior do que o esperado nos cenários A e B porque os pontos da nuvem não ficarão alinhados em um único plano e isso faz com que a triangulação fique desparelha, como se a parede reconstruída parecesse "amassada".
+A superfície foi maior do que o esperado nos cenários A e B porque os pontos da nuvem não ficaram alinhados em um único plano e isso faz com que a triangulação fique desparelha, como se a parede reconstruída parecesse "amassada".
 No cenário C o resultado foi menor do que o esperado, pois na coleta quando o robô estava se aproximando ao solo, os sinais com maior intensidade estavam vindo do solo e não da rampa, problema causado pela ambiguidade (Seção \ref{sec:imagem_acustica}).
-Além disso, o cenário C possui apenas 22 uc de profundidade, enquanto que o esperado era de 30 uc.
+Além disso, o cenário C possui apenas 22uc de profundidade, enquanto que o esperado era de 30uc.
 
 \begin{table}[H]
     \centering
-    \caption{Resultados obtidos do cálculo de superfície de cada cenário.}
+    \caption{Resultados obtidos do cálculo de superfície de cada cenário em simulação.}
     \begin{tabular}{@{}ccccc@{}}
         \toprule
         \textbf{Cenário} & \textbf{Superfície esperada} & \textbf{Superfície calculada} & \textbf{Diferença} & \textbf{Taxa de acerto} \\ \midrule
@@ -59,7 +45,7 @@ A última imagem exibe o volume gerado a partir da superfície.
 
 \begin{table}[H]
     \centering
-    \caption{Resultados obtidos do cálculo de volume de cada cenário.}
+    \caption{Resultados obtidos do cálculo de volume de cada cenário em simulação.}
     \begin{tabular}{@{}ccccc@{}}
         \toprule
         \textbf{Cenário} & \textbf{Volume esperado} & \textbf{Volume calculado} & \textbf{Diferença} & \textbf{Taxa de acerto} \\ \midrule
@@ -70,10 +56,9 @@ A última imagem exibe o volume gerado a partir da superfície.
     \label{tab:tabela_result_cenarios_vol}
 \end{table}
 
+\iffalse
 \begin{figure}[H]
     \centering
-    \caption{Reconstrução dos cenários em simulação virtual.}
-    \label{fig:recontrucao_virtual}
     \begin{subfigure}[t]{\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/wall3.png}
         \caption{Cenário A}
@@ -86,6 +71,16 @@ A última imagem exibe o volume gerado a partir da superfície.
         \includegraphics[width=\textwidth]{dados/figuras/declined.png}
         \caption{Cenário C}
     \end{subfigure}
+    \caption{Reconstrução dos cenários em simulação virtual.}
+    \label{fig:recontrucao_virtual}
+\end{figure}
+\fi
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.2]{dados/figuras/scenaries_reconstruction.png}
+    \caption{Reconstrução dos cenários em simulação virtual.}
+    \label{fig:recontrucao_virtual}
 \end{figure}
 
 \subsection{Avaliação dos contextos}
@@ -95,9 +90,9 @@ Essa seção descreve os resultados obtidos nas comparações de cenários, os c
 
 No primeiro contexto (AB), o volume calculado foi quase igual ao esperado, porém não foi melhor por causa de pequenos ruídos remanescentes e da própria reconstrução afetar levemente de forma negativa na taxa de acerto.
 O segundo contexto (AC) foi obtido um resultado abaixo em relação ao contexto anterior.
-O principal motivo foi por conta da determinação do plano base, em outras palavras, a distância entre o plano base e a malha no cenário A é de 30 uc, enquanto que no contexto AC o plano base está a 22 uc.
+O principal motivo foi por conta da determinação do plano base, em outras palavras, a distância entre o plano base e a malha no cenário A é de 30uc, enquanto que no contexto AC o plano base está a 22uc.
 Resultando em um volume menor, diminuindo o valor da diferença de volume do contexto.
-Os resultados dos contexto estão descritos na Tabela \ref{tab:tabela_resultados_contextos_sim} e os volumes reconstruídos estão exibidos na Figura \ref{fig:recontrucao_virtual}.
+Os resultados dos contexto estão descritos na Tabela \ref{tab:tabela_resultados_contextos_sim} e os volumes reconstruídos estão exibidos na Figura \ref{fig:recontrucao_virtual_contextos}.
 
 \begin{table}[H]
     \centering
@@ -113,8 +108,6 @@ Os resultados dos contexto estão descritos na Tabela \ref{tab:tabela_resultados
 
 \begin{figure}[H]
     \centering
-    \caption{Reconstrução dos cenários nos contextos.}
-    \label{fig:recontrucao_virtual}
     \begin{subfigure}[t]{0.33\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/AC1.png}
         \caption{Cenário A no contexto AB.}
@@ -133,30 +126,79 @@ Os resultados dos contexto estão descritos na Tabela \ref{tab:tabela_resultados
         \includegraphics[width=\textwidth]{dados/figuras/AB2.png}
         \caption{Cenário C no contexto AC.}
     \end{subfigure}
+    \caption{Reconstrução dos cenários nos contextos.}
+    \label{fig:recontrucao_virtual_contextos}
 \end{figure}
 
 
-\section{In loco}
+\section{Resultados com dados reais}
 
 \subsection{Avaliação da reconstrução do cenário}
 \label{sec:avaliacao_cenarios_inloco}
+
 Nesta seção, serão descritos os resultados obtidos na comparação realizada \textit{in loco}, no qual os cenários estão descritos na Seção \ref{sec:in_loco}.
 Diferente da simulação, a unidade de medida utilizada no experimento é o metro.
-A parede analisada da piscina, possui 1,18m de altura (contando apenas a parte submersa) e 2,1m de largura.
+A parede analisada da piscina, possui 1,18m de altura e 2,1m de largura (contando apenas a parte submersa).
 Como descrito anteriormente, são dois os cenários estudados: no cenário D o ROV está a 1,5m de distância da parede, enquanto que no cenário E, está a 3m.
 
-A primeira análise do experimento será a área de superfície, onde o resultado esperado é de 2,478m$^2$\footnote{Considerando a parede reta.}.
+A primeira análise do experimento será a área de superfície, onde o resultado esperado é de 2,478m$^2$ (considerando a parede reta).
 A variação vertical nos dados coletados é de 0,7m por causa do corpo do ROV, que ocupa 0,4m, impedindo que o sensor prossiga até o fundo da piscina (o sensor fica acoplado na parte superior do robô).
 Portanto o robô realizou o escaneamento de 0,7m apesar da parede possuir 1,18m de altura. 
 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{1\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/perto_original.png}
+        \caption{Dados coletados.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.327\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/perto_1.png}
+        \caption{Nuvem de pontos após a utilização dos filtros simples.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.327\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/perto_2.png}
+        \caption{Nuvem de pontos após a utilização dos filtros complexos.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.327\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/perto_surface.png}
+        \caption{Superfície reconstruída.}
+    \end{subfigure}
+    \caption{Reconstrução do cenário D.}
+    \label{fig:resultado_cenario_d}
+\end{figure}
+
 A Tabela \ref{tab:result_inloco_sup} mostra a superfície esperada levando em consideração ambos os casos (a altura total e a altura percorrida pelo sensor).
-Analisando o cenário D e levando em consideração a altura total (1,18m), o resultado do foi menor do que o esperado pelo simples motivo que o robô percorreu apenas 0,7m da altura.
+Analisando o cenário D (Figura \ref{fig:resultado_cenario_d}) e levando em consideração a altura total (1,18m), o resultado do foi menor do que o esperado pelo simples motivo que o robô percorreu apenas 0,7m da altura.
 Levando em consideração a altura percorrida (0,7m), o resultado foi maior do que o esperado por conta da parede reconstruída ser curvada, enquanto que a superfície esperada não leva esse detalhe em conta.
-O cenário E apresentou resultados semelhantes ao cenário anterior.
+O cenário E (Figura \ref{fig:resultado_cenario_e}) apresentou resultados semelhantes ao cenário anterior.
+
+\let\thefootnote\relax\footnote{Vale lembrar, que os filtros simples e complexos foram definidos na Seção \ref{sec:filtragem}.}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{1\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/longe_original.png}
+        \caption{Dados coletados.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.327\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/longe_1.png}
+        \caption{Nuvem de pontos após a utilização dos filtros simples.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.327\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/longe_2.png}
+        \caption{Nuvem de pontos após a utilização dos filtros complexos.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.327\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/longe_surface.png}
+        \caption{Superfície reconstruída.}
+    \end{subfigure}
+    \caption{Reconstrução do cenário E.}
+    \label{fig:resultado_cenario_e}
+\end{figure}
+
 
 \begin{table}[H]
     \centering
-    \caption{Resultados obtidos do cálculo de superfície, levando em conta a variação de altura na coleta.}
     \begin{tabular}{@{}ccccc@{}}
         \toprule
         \multicolumn{1}{c}{\textbf{Cenário}} & \textbf{Superfície esperada} & \textbf{Superfície calculada} & \textbf{Diferença} & \textbf{Taxa de acerto} \\ \midrule
@@ -166,17 +208,41 @@ O cenário E apresentou resultados semelhantes ao cenário anterior.
         \textbf{E (1,18m)} & 2,48m$^2$ & 1,92m$^2$ & 0,56m$^2$ & 77,42\% \\
         \bottomrule
     \end{tabular}
+    \caption{Resultados obtidos do cálculo de superfície, levando em consideração a variação de altura na coleta.}
     \label{tab:result_inloco_sup}
 \end{table}
 
+
 \subsection{Avaliação do contexto}
+\label{sec:avaliacao_contexto_inloco}
 
 A avaliação do cálculo de volume do contexto DE vai seguir o mesmo padrão da avaliação do cálculo de área de superfície de ambos cenários envolvidos nesse contexto.
 Portanto, haverá o contexto onde é considerado apenas a altura escaneada pelo sensor (0,7m) e outro onde o contexto considera toda a altura da parede (1,18m).
 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/volume_perto.png}
+        \caption{Volume reconstruído no cenário D.}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/volume_longe.png}
+        \caption{Volume reconstruído no cenário E.}
+    \end{subfigure}
+    \caption{Volumes no contexto DE.}
+    \label{fig:contexto_de}
+\end{figure}
+
+A Tabela \ref{tab:result_inloco_vol} descreve,  enquanto que a Figura \ref{fig:contexto_de} exibe os resultados obtidos no contexto DE.
+O resultado é próximo ao esperado quando é assumido que a altura da parede é somente a parte percorrida pelo sensor (0,7m).
+O motivo para o resultado ser diferente se dá pela distância entre as superfícies ser menor do que o esperado, resultando em um volume menor.
+No segundo caso, onde é considerado toda a parede (1,18m), o resultado é muito abaixo do esperado, por dois motivos: o primeiro motivo é por causa da distância entre as superfícies, que já foi descrito; o segundo motivo é por conta da própria diferença entre a altura das paredes reconstruídas com a altura esperada.
+Outra observação que dever ser notada é que no contexto esperado, as paredes são consideradas retas e possuem um espaçamento de 1,5 metros entre elas. 
+No contexto reconstruído, a distância entre as superfícies é entorno de 1,46m.
+
 \begin{table}[H]
     \centering
-    \caption{Resultados obtidos da comparação de volume no contexto em campo.}
+    \caption{Resultados obtidos da comparação de volume no contexto em campo, levando em consideração a variação de altura na coleta.}
     \begin{tabular}{@{}ccccc@{}}
         \toprule
         \textbf{Contexto} & \textbf{Volume esperado} & \textbf{Volume calculado} & \textbf{Diferença} & \textbf{Taxa de acerto} \\ \midrule
@@ -185,3 +251,24 @@ Portanto, haverá o contexto onde é considerado apenas a altura escaneada pelo 
     \end{tabular}
     \label{tab:result_inloco_vol}
 \end{table}
+
+Um dado que vale a pena observar é a comparação da quantidade de ruído nos dados coletados em simulação com os coletados em campo.
+Os dados em simulação não possui o ruído causado pela reverberação, e é por esse motivo que não se utiliza o filtro de distância máxima nesses \textit{datasets}.
+A consequência da reverberação, é uma maior taxa de ruído removidos nos dados em campo.
+Para afirmar esse fato, a Tabela \ref{tab:ruidos} mostra a taxa de pontos removidos nos processos de filtragem nos \textit{datasets} em simulação e em campo.
+
+\begin{table}[H]
+    \centering
+    \caption{Comparação de pontos removidos entre os cenários.}
+    \begin{tabular}{@{}cccccc@{}}
+        \toprule
+        \textbf{Cenário} & \textbf{\begin{tabular}[c]{@{}c@{}}Estado\\ inicial\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Após a filtragem\\ simples\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Após a filtragem\\ complexa\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Estado\\final\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Taxa de pontos\\ removidos\end{tabular}} \\ \midrule
+        \textbf{A} & 8413 & 4481 & 1580 & 1374 & 83,67\% \\
+        \textbf{B} & 8413 & 4108 & 1654 & 1305 & 84,49\% \\
+        \textbf{C} & 8594 & 4284 & 1807 & 817 & 90,49\% \\
+        \textbf{D} & 3200 & 1379 & 210 & 206 & 93,56\% \\
+        \textbf{E} & 3600 & 1127 & 338 & 235 & 93,47\% \\ \bottomrule
+    \end{tabular}
+    \label{tab:ruidos}
+\end{table}
+

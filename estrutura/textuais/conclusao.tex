@@ -3,10 +3,36 @@
 \chapter{CONCLUSÃO}
 \label{chap:conclusao}
 
-\section{Trabalhos Futuros}
-\label{sec:trabalhos_futuros}
+Este capítulo apresenta a conclusão final do autor sobre o trabalho desenvolvido.
+No Capítulo \ref{chap:fundamentacaoTeorica} foi apresentado o conteúdo sobre o sensor sonar e os \textit{softwares} utilizados, que são necessários para compreender o projeto.
+O Capítulo \ref{chap:metodologia} mostrou como as ferramentas e conhecimento apresentados no capítulo anterior interagiram entre si, para formar a metodologia de trabalho.
+As reconstruções e os resultados obtidos foram apresentados no Capítulo \ref{chap:resultados}.
+
 
 \section{Considerações Finais}
 \label{sec:consideracoes_finais}
 
-Observa-se que nenhum resultado obteve 100\% na taxa de acerto, porque isso é praticamente uma utopia.
+Observa-se que nenhum resultado obteve 100\% na taxa de acerto, porque isso é praticamente uma utopia, entretanto sempre é possível melhorar.
+Na reconstrução existe uma série de pequenos fatores que acabam diminuindo a taxa de acerto.
+Por exemplo, alguns dos filtros complexos podem acabar deslocando levemente os pontos da nuvem de pontos, interferindo no momento do cálculo.
+Do mesmo modo, existe a influência no momento da conversão das coordenadas polares para cartesianas do conjunto de pontos.
+
+Contudo, os resultados foram satisfatórios e acredito que o trabalho pode ser sequenciado e ser aplicado em um ambiente aberto, como um lago, rio ou até mesmo em uma geleira.
+Acredito que a instituição possui estrutura e pessoas competentes para prosseguir com o projeto.
+Os códigos desenvolvidos no trabalho, tutoriais e o próprio texto  estarão disponíveis no repositório do \textit{Github}\footnote{Link para acesso ao repositório: \url{https://github.com/brunohjs/3DReconstruction}.}.
+
+
+\section{Trabalhos Futuros}
+\label{sec:trabalhos_futuros}
+
+Alguns tópicos não foram considerados ou podem ser aperfeiçoados para realizar em futuros trabalhos. Entre os tópicos estão:
+
+\vspace{0,5em}
+\begin{itemize}
+    \item Aperfeiçoamento nos algoritmos de filtragem e reconstrução;
+    \item Triangulação direta no espaço 3D de superfícies;
+    \item Fazer a reconstrução de dados coletados em um local aberto;
+    \item Fazer a coleta em cenário mais complexos em simulação.
+    \item Utilizar outros modelos de sonar para fazer a coleta;
+    \item Utilizar a aplicação desenvolvida para fazer a reconstrução de dados coletados por outros sensores, como sensores ópticos;
+\end{itemize}
