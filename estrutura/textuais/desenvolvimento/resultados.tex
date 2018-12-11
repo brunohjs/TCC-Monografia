@@ -14,12 +14,8 @@ Além de fazer a análise da simulação separada da análise em campo, serão c
 \label{sec:avaliacao_cenarios_simulacao}
 
 Os resultados da reconstrução dos cenários, apresentados na Seção \ref{sec:simulation}, estão retratados na Tabela  \ref{tab:tabela_result_cenarios_sup}, na Tabela \ref{tab:tabela_result_cenarios_vol} e na Figura \ref{fig:recontrucao_virtual}.
-A Tabela \ref{tab:tabela_result_cenarios_sup} mostra o resultado da reconstrução da superfície através da diferença entre a área esperada e a área calculada pelo algoritmo.
+A Tabela \ref{tab:tabela_result_cenarios_sup} mostra o resultado da reconstrução da superfície através da diferença entre a área esperada e a área calculada.
 A avaliação do desempenho da reconstrução em 3D é ditada pela taxa de acerto destes dados.
-
-A superfície foi maior do que o esperado nos cenários A e B porque os pontos da nuvem não ficaram alinhados em um único plano e isso faz com que a triangulação fique desparelha, como se a parede reconstruída parecesse "amassada".
-No cenário C o resultado foi menor do que o esperado, pois na coleta quando o robô estava se aproximando ao solo, os sinais com maior intensidade estavam vindo do solo e não da rampa, problema causado pela ambiguidade (Seção \ref{sec:imagem_acustica}).
-Além disso, o cenário C possui apenas 22uc de profundidade, enquanto que o esperado era de 30uc.
 
 \begin{table}[H]
     \centering
@@ -33,6 +29,37 @@ Além disso, o cenário C possui apenas 22uc de profundidade, enquanto que o esp
     \end{tabular}
     \label{tab:tabela_result_cenarios_sup}
 \end{table}
+
+A superfície foi maior do que o esperado nos cenários $A$ e $B$ porque os pontos da nuvem não ficaram alinhados em um único plano e isso faz com que a triangulação fique desnivelada, como se a parede reconstruída parecesse "amassada", como ilustrado na Figura \ref{fig:lisa_amassada}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/parede_lisa.png}
+        \caption{Parede original.}
+        \label{fig:parede_lisa}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/parede_amassada.png}
+        \caption{Parede reconstruída.}
+        \label{fig:parede_amassada}
+    \end{subfigure}
+    \caption{Vista aproximada da parede original (lisa) e da parede reconstruída ("amassada").}
+    \label{fig:lisa_amassada}
+\end{figure}
+
+No cenário $C$ o resultado foi menor do que o esperado, pois quando o robô estava se aproximando ao solo na coleta, os sinais com maior intensidade estavam vindo do solo e não da rampa, problema causado pela ambiguidade (Seção \ref{sec:imagem_acustica}).
+Além disso, o cenário $C$ possui apenas 22uc de profundidade, enquanto que o esperado era de 30uc.
+A profundidade é descrita na Figura \ref{fig:dimensoes_modelo}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{dados/figuras/dimensoes_modelo.png}
+    \caption{Descrição das dimensões do modelo.}
+    \label{fig:dimensoes_modelo}
+\end{figure}
+
 
 A Tabela \ref{tab:tabela_result_cenarios_vol} mostra os resultados de cada cenário em relação ao volume.
 Os resultados do cálculo de volume não são diferentes em relação ao cálculo de superfície, portantos os motivos são os mesmos.
@@ -88,12 +115,6 @@ A última imagem exibe o volume gerado a partir da superfície.
 
 Essa seção descreve os resultados obtidos nas comparações de cenários, os chamados contextos (os contextos foram descritos na Seção \ref{sec:simulation}).
 
-No primeiro contexto (AB), o volume calculado foi quase igual ao esperado, porém não foi melhor por causa de pequenos ruídos remanescentes e da própria reconstrução afetar levemente de forma negativa na taxa de acerto.
-O segundo contexto (AC) foi obtido um resultado abaixo em relação ao contexto anterior.
-O principal motivo foi por conta da determinação do plano base, em outras palavras, a distância entre o plano base e a malha no cenário A é de 30uc, enquanto que no contexto AC o plano base está a 22uc.
-Resultando em um volume menor, diminuindo o valor da diferença de volume do contexto.
-Os resultados dos contexto estão descritos na Tabela \ref{tab:tabela_resultados_contextos_sim} e os volumes reconstruídos estão exibidos na Figura \ref{fig:recontrucao_virtual_contextos}.
-
 \begin{table}[H]
     \centering
     \caption{Resultados obtidos do cálculo de comparação de volume dos contextos em simulação.}
@@ -106,28 +127,42 @@ Os resultados dos contexto estão descritos na Tabela \ref{tab:tabela_resultados
     \label{tab:tabela_resultados_contextos_sim}
 \end{table}
 
+No primeiro contexto (AB), o volume calculado foi quase igual ao esperado, porém não foi melhor por causa de pequenos ruídos remanescentes e da própria reconstrução afetar levemente de forma negativa na taxa de acerto.
+O segundo contexto (AC) foi obtido um resultado abaixo em relação ao contexto anterior.
+O principal motivo foi por conta da determinação do plano base, em outras palavras, a distância entre o plano base e a malha no cenário A é de 30uc, enquanto que no contexto AC o plano base está a 22uc.
+Resultando em um volume menor, diminuindo o valor da diferença de volume do contexto.
+Os resultados dos contexto estão descritos na Tabela \ref{tab:tabela_resultados_contextos_sim} e os volumes reconstruídos estão exibidos nas Figuras \ref{fig:contexto_ab} e \ref{fig:contexto_ac}.
+
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.33\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/AC1.png}
-        \caption{Cenário A no contexto AB.}
+        \caption{Cenário A.}
     \end{subfigure}
     \hspace{1em}
     \begin{subfigure}[t]{0.33\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/AC2.png}
-        \caption{Cenário B no contexto AB.}
+        \caption{Cenário B.}
     \end{subfigure}
-    \begin{subfigure}[t]{0.33\textwidth}
-        \includegraphics[width=\textwidth]{dados/figuras/AB1.png}
-        \caption{Cenário A no contexto AC.}
-    \end{subfigure}
+    \caption{Cenários do contexto AB.}
+    \label{fig:contexto_ab}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
     \hspace{1em}
     \begin{subfigure}[t]{0.33\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/AB2.png}
-        \caption{Cenário C no contexto AC.}
+        \caption{Cenário A.}
     \end{subfigure}
-    \caption{Reconstrução dos cenários nos contextos.}
-    \label{fig:recontrucao_virtual_contextos}
+    \hspace{1em}
+    \begin{subfigure}[t]{0.33\textwidth}
+        \includegraphics[width=\textwidth]{dados/figuras/AB1.png}
+        \caption{Cenário C.}
+    \end{subfigure}
+    \caption{Cenários do contexto AC.}
+    \label{fig:contexto_ac}
 \end{figure}
 
 
@@ -168,7 +203,7 @@ Portanto o robô realizou o escaneamento de 0,7m apesar da parede possuir 1,18m 
 \end{figure}
 
 A Tabela \ref{tab:result_inloco_sup} mostra a superfície esperada levando em consideração ambos os casos (a altura total e a altura percorrida pelo sensor).
-Analisando o cenário D (Figura \ref{fig:resultado_cenario_d}) e levando em consideração a altura total (1,18m), o resultado do foi menor do que o esperado pelo simples motivo que o robô percorreu apenas 0,7m da altura.
+Analisando o cenário D (Figura \ref{fig:resultado_cenario_d}) e levando em consideração a altura total, o resultado do foi menor do que o esperado pelo simples motivo que o robô percorreu apenas 0,7m, sendo que a parte submersa da piscina possui altura de 1,18 metros.
 Levando em consideração a altura percorrida (0,7m), o resultado foi maior do que o esperado por conta da parede reconstruída ser curvada, enquanto que a superfície esperada não leva esse detalhe em conta.
 O cenário E (Figura \ref{fig:resultado_cenario_e}) apresentou resultados semelhantes ao cenário anterior.
 
@@ -201,12 +236,11 @@ O cenário E (Figura \ref{fig:resultado_cenario_e}) apresentou resultados semelh
     \centering
     \begin{tabular}{@{}ccccc@{}}
         \toprule
-        \multicolumn{1}{c}{\textbf{Cenário}} & \textbf{Superfície esperada} & \textbf{Superfície calculada} & \textbf{Diferença} & \textbf{Taxa de acerto} \\ \midrule
-        \textbf{D (0,70m)} & 1,51m$^2$ & 1,96m$^2$ & 0,45m$^2$ & 77,04\% \\
-        \textbf{D (1,18m)} & 2,48m$^2$ & 1,96m$^2$ & 0,52m$^2$ & 79,03\% \\
-        \textbf{E (0,70m)} & 1,51m$^2$ & 1,92m$^2$ & 0,41m$^2$ & 78,64\% \\
-        \textbf{E (1,18m)} & 2,48m$^2$ & 1,92m$^2$ & 0,56m$^2$ & 77,42\% \\
-        \bottomrule
+        \textbf{\begin{tabular}[c]{@{}c@{}}Cenário\\ (altura considerada)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Superfície\\ esperada\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Superfície\\ calculada\end{tabular}} & \textbf{Diferença} & \textbf{\begin{tabular}[c]{@{}c@{}}Taxa\\ de acerto\end{tabular}} \\ \midrule
+        \textbf{D (0,70m)} & 1,51m & 1,96m & 0,45m & 77,04\% \\
+        \textbf{D (1,18m)} & 2,48m & 1,96m & 0,52m & 73,47\% \\
+        \textbf{E (0,70m)} & 1,51m & 1,92m & 0,41m & 78,64\% \\
+        \textbf{E (1,18m)} & 2,48m & 1,92m & 0,56m & 70,83\% \\ \bottomrule
     \end{tabular}
     \caption{Resultados obtidos do cálculo de superfície, levando em consideração a variação de altura na coleta.}
     \label{tab:result_inloco_sup}
@@ -218,6 +252,10 @@ O cenário E (Figura \ref{fig:resultado_cenario_e}) apresentou resultados semelh
 
 A avaliação do cálculo de volume do contexto DE vai seguir o mesmo padrão da avaliação do cálculo de área de superfície de ambos cenários envolvidos nesse contexto.
 Portanto, haverá o contexto onde é considerado apenas a altura escaneada pelo sensor (0,7m) e outro onde o contexto considera toda a altura da parede (1,18m).
+
+A Tabela \ref{tab:result_inloco_vol} descreve,  enquanto que a Figura \ref{fig:contexto_de} exibe os resultados obtidos no contexto DE.
+O resultado é próximo ao esperado quando é assumido que a altura da parede é somente a parte percorrida pelo sensor (0,7m).
+O motivo para o resultado ser diferente se dá pela distância entre as superfícies ser menor do que o esperado (cerca de 1,46m, enquanto que o esperado é de 1,5m), resultando em um volume menor.
 
 \begin{figure}[H]
     \centering
@@ -233,12 +271,8 @@ Portanto, haverá o contexto onde é considerado apenas a altura escaneada pelo 
     \label{fig:contexto_de}
 \end{figure}
 
-A Tabela \ref{tab:result_inloco_vol} descreve,  enquanto que a Figura \ref{fig:contexto_de} exibe os resultados obtidos no contexto DE.
-O resultado é próximo ao esperado quando é assumido que a altura da parede é somente a parte percorrida pelo sensor (0,7m).
-O motivo para o resultado ser diferente se dá pela distância entre as superfícies ser menor do que o esperado, resultando em um volume menor.
-No segundo caso, onde é considerado toda a parede (1,18m), o resultado é muito abaixo do esperado, por dois motivos: o primeiro motivo é por causa da distância entre as superfícies, que já foi descrito; o segundo motivo é por conta da própria diferença entre a altura das paredes reconstruídas com a altura esperada.
-Outra observação que dever ser notada é que no contexto esperado, as paredes são consideradas retas e possuem um espaçamento de 1,5 metros entre elas. 
-No contexto reconstruído, a distância entre as superfícies é entorno de 1,46m.
+No segundo caso, onde é considerado toda a parede (1,18m), o resultado é muito abaixo do esperado, por dois motivos: o primeiro motivo é por causa da distância entre as superfícies, explicado no parágrafo anterior; o segundo motivo é por conta da própria diferença entre a altura das paredes reconstruídas com a altura esperada (diferença de 0,48m).
+Uma observação que deve ser levada em conta: no contexto esperado, as paredes são consideradas retas, e isso influencia negativamente na taxa de acerto.
 
 \begin{table}[H]
     \centering

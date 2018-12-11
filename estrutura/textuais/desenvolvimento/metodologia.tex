@@ -554,32 +554,33 @@ O resultado da projeção é um conjunto de poliedros irregulares, onde cada pol
     \label{fig:prism}
 \end{figure}
 
-O plano base em uma comparação é definido pelo ponto mais distante do sensor entre os dois modelos.
+O plano base em uma comparação é definido pelo ponto coletado mais distante do sensor entre os dois modelos.
 Com o ponto selecionado, o plano base é traçado e ambos modelos constroem seus volumes com base nesse plano.
+
+Na Figura \ref{fig:projection_declined} é ilustrado o ROV coletando dados do cenário $C$ enquanto que na Figura \ref{fig:projection_wall3} mostra a coleta do cenário $A$.
+Para não ficar tão repetitivo na explicação a seguir, o cenário $C$ e $A$ serão denominados de $CC$ e $CA$, respectivamente.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/projection_wall3.jpg}
-        \caption{Coleta de dados no cenário A.}
+        \caption{}
         \label{fig:projection_wall3}
     \end{subfigure}
     \begin{subfigure}[t]{0.48\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/projection_declined.jpg}
-        \caption{Coleta de dados no cenário C.}
+        \caption{}
         \label{fig:projection_declined}
     \end{subfigure}
-    \caption{Caption}
-    \label{fig:my_label}
+    \caption{ROV realizando a coleta de dados nos cenários $A$ (esquerda) e $C$ (direita).}
 \end{figure}
 
-Na Figura \ref{fig:projection_declined} é ilustrado o ROV coletando dados do cenário C enquanto que na Figura \ref{fig:projection_wall3} mostra a coleta do cenário A.
-Na comparação entre estes dois cenários, se nota que o ponto coletado que está mais distante do sensor pertence ao cenário C (considerando apenas a parede dos ambientes).
+Na comparação entre estes dois cenários, se nota que o ponto coletado que está mais distante do sensor pertence ao $CC$ (considerando apenas a parede dos ambientes).
 A partir deste ponto mais distante se traça o plano base.
-Com o plano base definido, o volume do cenário C é gerado como mostra a Figura \ref{fig:projection1}.
-Para ilustrar a diferença entre ambos cenários, a Figura \ref{fig:projection2} mostra a nuvem de pontos do cenário A em comparação com o modelo reconstruído do cenário C.
-O cenário A utilizará o mesmo plano base que foi usado no cenário C para reconstruir o volume, ilustrado pela Figura \ref{fig:projection3}.
-Após a reconstrução de ambos os volumes, se realiza o cálculo do volume de cada modelo e, por fim, compara os valores.
+Com o plano base definido, o volume do $CC$ é gerado como mostra a Figura \ref{fig:projection1}.
+Para ilustrar a diferença entre ambos cenários, a Figura \ref{fig:projection2} mostra a nuvem de pontos do $CA$ em comparação com o modelo reconstruído do $CC$.
+Na Figura \ref{fig:projection3}, o $CA$ utiliza o mesmo plano base que foi usado no $CC$, para reconstruir o volume.
+Após a reconstrução de ambos os volumes, se faz o cálculo do volume de cada modelo e, por fim, se compara os valores.
 
 \begin{figure}[H]
     \centering
@@ -590,21 +591,20 @@ Após a reconstrução de ambos os volumes, se realiza o cálculo do volume de c
     \end{subfigure}
     \begin{subfigure}[t]{0.325\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/projection2.png}
-        \caption{Comparação entre modelos.}
+        \caption{Comparação entre a nuvem de pontos do $CA$ com o modelo do $CC$.}
         \label{fig:projection2}
     \end{subfigure}
     \begin{subfigure}[t]{0.325\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/projection3.png}
-        \caption{Geração do volume do segundo modelo.}
+        \caption{Geração do volume do cenário $A$.}
         \label{fig:projection3}
     \end{subfigure}
     \caption{Reconstrução do volume de dois modelos em comparação.}
     \label{fig:projection}
 \end{figure}
 
-Como explicado no início da seção, a projeção da malha em um plano gera um volume que é composto por poliedros irregulares (Figura \ref{fig:prism}). O poliedro irregular é semelhante ao prisma regular, porém suas bases são diferentes (Figura \ref{fig:polyhedron}). Por essa razão, não se pode utilizar a fórmula convencional de cálculo de volume de prismas regulares.  
-Apesar de ser pouco provável, pode haver poliedros com a forma de um prisma regular (quando os 3 pontos da base superior se encontram na mesma altura). 
-O algoritmo é capaz de tratar esse caso específico.
+Como explicado no início da seção, a projeção da malha em um plano gera um volume que é composto por poliedros irregulares (Figura \ref{fig:prism}). O poliedro irregular é semelhante ao prisma regular, porém suas bases são diferentes (Figuras \ref{fig:polyhedron} e \ref{fig:regular_prisms}). Por essa razão, não se pode utilizar a fórmula do volume do prisma regular.  
+Apesar de ser pouco provável, pode haver poliedros com a forma de um prisma regular.
 
 \begin{figure}[H]
     \centering
@@ -632,24 +632,30 @@ O algoritmo é capaz de tratar esse caso específico.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{dados/figuras/regular_prisms.jpg}
-    \caption{Prismas regulares. Prismas que possuem ambas bases iguais.}
+    \caption{Prismas regulares: são prismas que possuem ambas bases iguais.}
     \label{fig:regular_prisms}
 \end{figure}
 
-Antes de realizar o procedimento, é importante saber que os dados utilizados como parâmetros são 6 pontos, sendo os 3 pontos da base inferior e os 3 pontos da base superior do poliedro irregular.
-Para realizar esse cálculo, é necessário dividir o poliedro irregular na altura do ponto da base superior mais próximo à base inferior.
+Antes de descrever o cálculo do volume, é importante saber que os dados utilizados como parâmetros são 6 pontos, sendo os 3 pontos da base inferior e os 3 pontos da base superior do poliedro irregular.
+Para realizar esse cálculo, é necessário dividir o poliedro irregular na altura do ponto da base superior mais próximo à base inferior, representado pelo ponto $P$, como mostra a Figura \ref{fig:pol_sep3}.
 O resultado da divisão é uma pirâmide irregular na parte superior e um prisma regular na parte inferior, como ilustra a Figura \ref{fig:polyhedron3}.
-Os pontos $b$ e $e$ são projeções dos pontos $a$, $c$ e $d$, ilustrado na Figura \ref{fig:pyramid_i}.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.3\textwidth}
+    \includegraphics[scale=0.7]{dados/figuras/pol_sep3.png}
+    \caption{Base superior e inferior do poliedro irregular. O ponto $P$ representa o ponto da base superior que é mais próximo à base inferior.}
+    \label{fig:pol_sep3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/pyramid_line3.png}
-        \caption{Pirâmide irregular.}
+        \caption{Pirâmide irregular. O ponto $a$ é o topo da pirâmide que está deitada.}
         \label{fig:pyramid_i}
     \end{subfigure}
     \hspace{2em}
-    \begin{subfigure}[t]{0.3\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\textwidth]{dados/figuras/prism_line2.png}
         \caption{Prisma regular.}
         \label{fig:prism_i}
